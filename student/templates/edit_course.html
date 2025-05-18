@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Course - Tutionary</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <button class="toggle-btn" id="toggleBtn">☰</button>
+  
+  <div class="container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <i> <img class="online-course" src="{%  static 'image/education.png' %}" alt=""> </i>
+        <h2>Tutionary</h2>
+      </div>
+      
+      <ul class="nav-list">
+        <li class="nav-item">
+          <i> <img class="online-course" src="{% static 'image/online-course.png' %}" alt=""> </i>
+          <a href="{% url 'index' %}" class="nav-link">Home</a>
+        </li>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <i> <img class="online-course" src="{%  static 'image/online-course.png' %}" alt=""> </i>
+          <a href="{% url 'addcourse' %}" class="nav-link">Class</a>
+        </li>
+        <li class="nav-item">
+          <i><img class="online-course" src="{%  static 'image/female.png' %}" alt=""></i>
+          <a href="{% url 'addteacher' %}" class="nav-link">Teacher</a>
+        </li>
+        <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/clock.png' %}" alt=""></i>
+            <a href="{% url 'addtime' %}" class="nav-link">Time Schedule</a>
+        </li>
+        <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/students.png' %}" alt=""></i>
+          <a href="{% url 'addstudent' %}" class="nav-link">Student</a>
+        </li>
+        <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
+          <a href="{% url 'studentlist' %}" class="nav-link">Student List</a>
+        </li>
+        <li class="nav-item">
+          <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
+        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+      </li>
+      </ul>
+    </nav>
+    <div class="content-wrapper">
+        <div class="course-main-content">
+          <h1 class="course-heading">Edit Class</h1>
+          
+          <form method="post" action="{% url 'edit_course' course.id %}" class="course-form" id="editCourseForm">
+            {% csrf_token %}
+            
+            <div class="course-form-group">
+              <label for="course" class="course-label">Name</label>
+              <input placeholder="Enter class name" type="text" id="course" name="course" class="course-input" value="{{ course.name }}" required>
+          </div>        
+            <div class="course-form-group">
+              <label for="description" class="course-label">Description</label>
+              <textarea id="description" name="description" rows="4" class="course-textarea" required>{{ course.description }}</textarea>
+            </div>
+        
+            <div class="course-form-group">
+              <label for="fees" class="course-label">Fees</label>
+              <input type="number" id="fees" value="{{ course.fees }}" name="fees" class="course-input" required>
+            </div>
+        
+            <div class="form-actions">
+              <button type="submit" class="course-btn-submit">Update</button>
+              <a href="{% url 'addcourse' %}" class="course-btn-cancel">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div>
+  </div>
+
+  <script>
+    // Toggle sidebar on mobile
+    const toggleBtn = document.getElementById('toggleBtn');
+    const sidebar = document.getElementById('sidebar');
+    
+    toggleBtn.addEventListener('click', function() {
+      sidebar.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>

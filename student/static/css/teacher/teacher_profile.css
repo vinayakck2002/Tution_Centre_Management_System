@@ -1,0 +1,288 @@
+/* Base styles from your existing CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
+  display: flex;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 250px;
+  color: white;
+  background-color: #2c3e50;
+  transition: transform 0.3s ease;
+  position: fixed;
+  height: 100vh;
+  z-index: 100;
+}
+
+.sidebar-header {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.sidebar-header h2 {
+  margin-top: 10px;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+}
+
+.nav-item {
+  padding: 15px 20px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.online-course {
+  width: 20px;
+  height: 20px;
+}
+
+.nav-item:hover {
+  background-color: #34495e;
+  cursor: pointer;
+}
+
+.nav-item i {
+  margin-right: 10px;
+  width: 20px;
+  text-align: center;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  width: 100%;
+}
+
+/* Toggle button for mobile */
+.toggle-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 200;
+  display: none;
+}
+
+.toggle-btn:focus {
+  outline: none;
+}
+
+/* Content area - centered */
+.content-wrapper {
+  flex: 1;
+  margin-left: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  min-height: 100vh;
+}
+
+.course-main-content {
+  max-width: 1142px;
+  width: 100%;
+  border-radius: 10px;
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.course-heading {
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+/* Alert message styling */
+.messages {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.alert {
+  padding: 12px 15px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+}
+
+.alert-info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+/* Content container */
+.content {
+  width: 100%;
+}
+
+/* Contact profile section */
+.contact-profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+/* Profile card styling */
+.profile-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 100%;
+  max-width: 550px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to right, #3498db, #2c3e50);
+}
+
+.profile-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.profile-card h1 {
+  color: #2c3e50;
+  font-size: 28px;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #eaeaea;
+  text-align: center;
+  font-weight: 700;
+}
+
+.profile-card p {
+  margin-bottom: 18px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #4a5568;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.profile-card strong {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-right: 10px;
+  min-width: 80px;
+}
+
+/* Add a subtle line between info items */
+.profile-card p:not(:last-child) {
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 18px;
+}
+
+/* Edit button styling */
+.edit-profile-btn {
+  background-color: #3a8db7;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: block;
+  margin-top: 25px;
+  text-align: center;
+}
+
+.edit-profile-btn:hover {
+  background-color: #32749a;
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .sidebar {
+      transform: translateX(-100%);
+  }
+  
+  .sidebar.active {
+      transform: translateX(0);
+  }
+  
+  .toggle-btn {
+      display: block;
+  }
+  
+  .content-wrapper {
+      margin-left: 0;
+      padding-top: 70px;
+  }
+  
+  .profile-card {
+      padding: 25px;
+  }
+  
+  .profile-card h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+  }
+  
+  .profile-card p {
+      flex-direction: column;
+      margin-bottom: 15px;
+  }
+  
+  .profile-card strong {
+      margin-bottom: 5px;
+      min-width: auto;
+  }
+}

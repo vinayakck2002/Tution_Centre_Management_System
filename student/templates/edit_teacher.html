@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Teacher - Tutionary</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/add_teacher.css' %}">
+</head>
+<body>
+  <button class="toggle-btn" id="toggleBtn">☰</button>
+  
+  <div class="container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <i> <img class="online-course" src="{%  static 'image/education.png' %}" alt=""> </i>
+        <h2>Tutionary</h2>
+      </div>
+      
+      <ul class="nav-list">
+        <li class="nav-item">
+          <i> <img class="online-course" src="{% static 'image/online-course.png' %}" alt=""> </i>
+          <a href="{% url 'index' %}" class="nav-link">Home</a>
+        </li>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <i> <img class="online-course" src="{%  static 'image/online-course.png' %}" alt=""> </i>
+          <a href="{% url 'addcourse' %}" class="nav-link">Class</a>
+        </li>
+        <li class="nav-item">
+          <i><img class="online-course" src="{%  static 'image/female.png' %}" alt=""></i>
+          <a href="{% url 'addteacher' %}" class="nav-link">Teacher</a>
+        </li>
+        <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/clock.png' %}" alt=""></i>
+            <a href="{% url 'addtime' %}" class="nav-link">Time Schedule</a>
+        </li>
+        <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/students.png' %}" alt=""></i>
+          <a href="{% url 'addstudent' %}" class="nav-link">Student</a>
+        </li>
+        <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
+          <a href="{% url 'studentlist' %}" class="nav-link">Student List</a>
+        </li>
+        <li class="nav-item">
+          <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
+        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+      </li>
+      </ul>
+    </nav>
+    <div class="content-wrapper">
+        <div class="course-main-content">
+            <h1 class="course-heading">Edit Teacher</h1>
+            
+<form method="post" action="{% url 'edit_teacher' teacher.id %}" class="course-form" id="editTeacherForm" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="course-form-group">
+        <label for="course" class="course-label">Name</label>
+        <input placeholder="Enter teacher name" type="text" id="course" name="name" class="course-input" value="{{ teacher.name }}" required>
+    </div>
+
+    <div class="course-form-group">
+        <label for="class_id" class="course-label">Class</label>
+        <select id="class_id" name="class_id" class="course-input" required>
+            <option value="" disabled>Select Class</option>
+            {% for cls in classes %}
+                <option value="{{ cls.id }}" {% if cls.id == teacher.classs.id %}selected{% endif %}>{{ cls.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="course-form-group">
+        <label for="email" class="course-label">Email</label>
+        <input placeholder="Enter teacher email" type="email" id="email" name="email" class="course-input" value="{{ teacher.email }}" required>
+    </div>
+
+    <div class="course-form-group">
+        <label for="photo" class="course-label">Photo</label>
+        {% if teacher.photo %}
+            <img src="{{ teacher.photo.url }}" style="width:100px;"><br>
+        {% endif %}
+        <input type="file" id="photo" name="photo" accept="image/*" class="course-input">
+    </div>
+
+    <div class="course-form-group">
+        <label for="sslc_certificate" class="course-label">SSLC Certificate</label>
+        {% if teacher.sslc_certificate %}
+            <a href="{{ teacher.sslc_certificate.url }}" class="Viewteacher" target="_blank">View Current Certificate</a><br>
+        {% endif %}
+        <input type="file" id="sslc_certificate" name="sslc_certificate" class="course-input">
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="course-btn-submit">Update</button>
+        <a href="{% url 'addteacher' %}" class="btn-cancel">Cancel</a>
+    </div>
+</form>
+        </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Toggle sidebar on mobile
+    const toggleBtn = document.getElementById('toggleBtn');
+    const sidebar = document.getElementById('sidebar');
+    
+    toggleBtn.addEventListener('click', function() {
+      sidebar.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>

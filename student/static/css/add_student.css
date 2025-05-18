@@ -1,0 +1,12 @@
+.gender-selection-container {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .gender-selection-container select {
+    flex: 1;
+  }
+  
+  .add-gender-btn {
+    white-space: nowrap;
+  }

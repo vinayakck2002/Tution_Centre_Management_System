@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mark Attendance - Tutionary</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/add_course.css' %}">
+  <style>
+    .attendance-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .attendance-table th, .attendance-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    .attendance-table th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+    .profile-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .attendance-status {
+      display: flex;
+      gap: 15px;
+    }
+    .status-option {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .submit-btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin-top: 20px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: #2196F3;
+      text-decoration: none;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    .date-info {
+      margin-bottom: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+    .no-students {
+      margin-top: 20px;
+      color: #666;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <button class="toggle-btn" id="toggleBtn">☰</button>
+  
+  <div class="container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <i> <img class="online-course" src="{%  static 'image/education.png' %}" alt=""> </i>
+        <h2>Tutionary</h2>
+      </div>
+      
+      <ul class="nav-list">
+        <li class="nav-item">
+          <i> <img class="online-course" src="{% static 'image/online-course.png' %}" alt=""> </i>
+          <a href="{% url 'teacher_home' %}" class="nav-link">Home</a>
+        </li>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <i> <img class="online-course" src="{%  static 'image/online-course.png' %}" alt=""> </i>
+          <a href="{% url 'teacher_class' %}" class="nav-link">Class</a>
+        </li>
+        <li class="nav-item">
+          <i><img class="online-course" src="{%  static 'image/female.png' %}" alt=""></i>
+          <a href="{% url 'teacher_profile' %}" class="nav-link">Teacher</a>
+        </li>
+        <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
+          <a href="{% url 'teacher_student_list' %}" class="nav-link">Student List</a>
+        </li>
+        <li class="nav-item">
+          <i><img class="online-course" src="{%  static 'image/clock.png' %}" alt=""></i>
+          <a href="#" class="nav-link">Attendance</a>
+        </li>
+        <li class="nav-item">
+          <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
+        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+      </li>
+      </ul>
+    </nav>
+
+    <div class="content-wrapper">
+      <div class="course-main-content">
+        <h1 class="course-heading">Mark Attendance: {{ classs.name }}</h1>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="date-info">Date: {{ today }}</div>
+        
+        {% if students %}
+        <form method="post">
+          {% csrf_token %}
+          <table class="attendance-table">
+            <thead>
+              <tr>
+                <th>Photo</th>
+                <th>Student Name</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for student in students %}
+              <tr>
+                <td>
+                  {% if student.image %}
+                  <img src="{{ student.image.url }}" alt="{{ student.fname }}" class="profile-img">
+                  {% else %}
+                  <div class="profile-img-placeholder">N/A</div>
+                  {% endif %}
+                </td>
+                <td>{{ student.fname }} {{ student.lname }}</td>
+                <td>
+                  <div class="attendance-status">
+                    <div class="status-option">
+
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <button type="submit" class="submit-btn">Save Attendance</button>
+        </form>
+        {% else %}
+        <p class="no-students">No students enrolled in this class.</p>
+        {% endif %}
+        
+        <a href="#" class="back-link">← Back to Classes</a>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Toggle sidebar on mobile
+    const toggleBtn = document.getElementById('toggleBtn');
+    const sidebar = document.getElementById('sidebar');
+    
+    toggleBtn.addEventListener('click', function() {
+      sidebar.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>

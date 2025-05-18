@@ -1,0 +1,214 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student List - Tutionary</title>
+  <link rel="stylesheet" href="{% static 'css/teacher/teacher_studentlist.css' %}">
+  <style>
+    /* Search bar styles */
+    .search-container {
+      margin: 20px 0;
+      width: 100%;
+      max-width: 500px;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 12px 20px;
+      border: 2px solid #ddd;
+      border-radius: 25px;
+      font-size: 16px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .search-input:focus {
+      outline: none;
+      border-color: #4a90e2;
+      box-shadow: 0 2px 10px rgba(74, 144, 226, 0.3);
+    }
+    
+    .no-results {
+      padding: 20px;
+      text-align: center;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      margin: 20px 0;
+      font-size: 16px;
+      color: #666;
+    }
+
+    /* Student image styles */
+    .student-image {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #e0e0e0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Responsive table with better spacing for images */
+    .styled-table {
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .styled-table td {
+      vertical-align: middle;
+      padding: 12px 15px;
+    }
+
+    .student-row:hover {
+      background-color: #f5f9ff;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    /* Default profile picture style */
+    .default-profile {
+      background-color: #e0e0e0;
+      color: #555;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <button class="toggle-btn" id="toggleBtn">☰</button>
+
+  <div class="container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <i><img class="online-course" src="{% static 'image/education.png' %}" alt=""></i>
+        <h2>Tutionary</h2>
+      </div>
+
+      <ul class="nav-list">
+        <li class="nav-item">
+          <i><img class="online-course" src="{% static 'image/online-course.png' %}" alt=""></i>
+          <a href="{% url 'teacher_home' %}" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item">
+          <i><img class="online-course" src="{% static 'image/online-course.png' %}" alt=""></i>
+          <a href="{% url 'teacher_class' %}" class="nav-link">Class</a>
+        </li>
+        <li class="nav-item">
+          <i><img class="online-course" src="{% static 'image/female.png' %}" alt=""></i>
+          <a href="{% url 'teacher_profile' %}" class="nav-link">Teacher</a>
+        </li>
+        <li class="nav-item">
+          <i><img class="online-course" src="{% static 'image/audience.png' %}" alt=""></i>
+          <a href="{% url 'teacher_student_list' %}" class="nav-link">Student List</a>
+        </li>
+        <li class="nav-item">
+          <i><img class="online-course" src="{% static 'image/audience.png' %}" alt=""></i>
+          <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="content-wrapper">
+      <div class="course-main-content">
+        <h1 class="course-heading">Students in Your Class</h1>
+
+        {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Search Bar -->
+        <div class="search-container">
+          <input type="text" id="studentSearch" class="search-input" placeholder="Search students by name..." onkeyup="searchStudents()">
+        </div>
+
+        {% if students %}
+        <table class="styled-table" id="studentTable">
+          <thead>
+            <tr>
+              <th>Profile</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Phone</th>
+              <th>School</th>
+              <th>Gender</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for student in students %}
+            <tr class="student-row" data-student-name="{{ student.fname|lower }} {{ student.lname|lower }}">
+              <td>
+                <img src="{% if student.image %}{{ student.image.url }}{% else %}{% static 'image/default_student.png' %}{% endif %}" 
+                     alt="{{ student.fname }}'s profile" class="student-image">
+              </td>
+              <td>{{ student.fname }}</td>
+              <td>{{ student.lname }}</td>
+              <td>{{ student.phno }}</td>
+              <td>{{ student.current_school }}</td>
+              <td>{{ student.gender.name }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        
+        <!-- No results message (hidden by default) -->
+        <div class="no-results" id="noResults" style="display: none;">
+          <p>No students found matching your search.</p>
+        </div>
+        
+        {% else %}
+        <p>No students found in your class.</p>
+        {% endif %}
+      </div>
+    </div>
+    
+  </div>
+
+  <script>
+    // Toggle sidebar on mobile
+    const toggleBtn = document.getElementById('toggleBtn');
+    const sidebar = document.getElementById('sidebar');
+    
+    toggleBtn.addEventListener('click', function() {
+      sidebar.classList.toggle('active');
+    });
+    
+    // Search functionality
+    function searchStudents() {
+      const searchInput = document.getElementById('studentSearch');
+      const filter = searchInput.value.toLowerCase();
+      const studentRows = document.getElementsByClassName('student-row');
+      const noResultsDiv = document.getElementById('noResults');
+      
+      let foundMatch = false;
+      
+      for (let i = 0; i < studentRows.length; i++) {
+        const studentName = studentRows[i].getAttribute('data-student-name');
+        if (studentName.indexOf(filter) > -1) {
+          studentRows[i].style.display = "";
+          foundMatch = true;
+        } else {
+          studentRows[i].style.display = "none";
+        }
+      }
+      
+      // Show or hide the "no results" message
+      if (foundMatch || filter === "") {
+        noResultsDiv.style.display = "none";
+      } else {
+        noResultsDiv.style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>

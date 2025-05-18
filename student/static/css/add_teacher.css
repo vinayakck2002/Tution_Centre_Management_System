@@ -1,0 +1,49 @@
+.password-notification {
+    margin-bottom: 20px;
+  }
+  
+  .alert {
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  
+  .alert-success {
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    color: #3c763d;
+  }
+  
+  .alert-info {
+    background-color: #d9edf7;
+    border: 1px solid #bce8f1;
+    color: #31708f;
+  }
+  
+  .alert-warning {
+    color: #8a6d3b;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  .btn-cancel {
+  display: inline-block;
+  padding: 7px;
+  margin-top: 7px;
+  background-color: #f44336;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+
+}
+
+.btn-cancel:hover {
+  background-color: #d32f2f; 
+} 
+.Viewteacher{
+  margin-top: 7px;
+  margin-bottom: 7px;
+  text-decoration: none;
+}

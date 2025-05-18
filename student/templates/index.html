@@ -1,0 +1,254 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Sidebar Navigation</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+  <style>
+    .tracker-container {
+      max-width: 300px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      margin: 30px auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    .grade-selector {
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      background-color: white;
+      font-size: 14px;
+      color: var(--text-color);
+      cursor: pointer;
+      outline: none;
+    }
+
+    .donut-chart-container {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 30px;
+    }
+
+    .donut-chart {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+
+      background: conic-gradient(var(--blue-color) 0% {
+            {
+            boys_percentage
+          }
+        }
+
+        %,
+        var(--yellow-color) {
+            {
+            boys_percentage
+          }
+        }
+
+        % 100%);
+      transform: rotate(-90deg);
+    }
+
+    .donut-hole {
+      position: absolute;
+      width: 60%;
+      height: 60%;
+      background-color: white;
+      border-radius: 50%;
+      top: 20%;
+      left: 20%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .total-label {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: -5px;
+    }
+
+    .total-count {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    .legend {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 10px;
+    }
+
+    .legend-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .yellow {
+      background-color: var(--yellow-color);
+    }
+
+    .blue {
+      background-color: var(--blue-color);
+    }
+
+    .legend-text {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 2px;
+    }
+
+    .legend-number {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+  </style>
+</head>
+
+<body>
+  <button class="toggle-btn" id="toggleBtn">☰</button>
+
+  <div class="container">
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <i> <img class="online-course" src="{%  static 'image/education.png' %}" alt=""> </i>
+        <h2>Tutionary</h2>
+      </div>
+
+      <ul class="nav-list">
+        <li class="nav-item">
+          <i> <img class="online-course" src="{% static 'image/online-course.png' %}" alt=""> </i>
+          <a href="{% url 'index' %}" class="nav-link">Home</a>
+        </li>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <i> <img class="online-course" src="{%  static 'image/online-course.png' %}" alt=""> </i>
+            <a href="{% url 'addcourse' %}" class="nav-link">Class</a>
+          </li>
+          <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/female.png' %}" alt=""></i>
+            <a href="{% url 'addteacher' %}" class="nav-link">Teacher</a>
+          </li>
+          <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/clock.png' %}" alt=""></i>
+            <a href="{% url 'addtime' %}" class="nav-link">Time Schedule</a>
+          </li>
+          <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/students.png' %}" alt=""></i>
+            <a href="{% url 'addstudent' %}" class="nav-link">Student</a>
+          </li>
+          <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
+            <a href="{% url 'studentlist' %}" class="nav-link">Student List</a>
+          </li>
+          <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
+            <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+          </li>
+        </ul>
+    </nav>
+    <div class="main-content">
+      <h1 style='text-align: center; margin: 10px 0  30px 0;'>Tution Centre</h1>
+      <p style='text-align: center; max-width: 800px; margin: 0 auto 20px auto;'>Tutionary in Calicut provides the best
+        offline tuition classes with expert teachers and a friendly atmosphere. Get personal attention and well-planned
+        lessons to help you succeed. The top choice for a trusted Tuition Centre in calicut</p>
+        <div class="image-grid">
+        <!-- Grid item 1 -->
+        <div class="grid-item">
+          <img class="grid-image" src="{% static 'image/empty-classroom.jpg' %}" alt="class rooms">
+          <div class="grid-text">
+            <h3>Class</h3>
+            <p>
+              Our institute currently offers classes including
+              {% for cls in classes %}
+              {{ cls.name }}{% if forloop.revcounter == 2 %}, and {% elif not forloop.last %}, {% endif %}
+              {% endfor %}. We are committed to providing quality education across all levels.
+            </p>
+
+
+          </div>
+        </div>
+
+        <!-- Grid item 2 -->
+        <div class="grid-item">
+          <img class="grid-image" src="{% static 'image/World-Teachers-Day.jpg' %}" alt="Teacher">
+          <div class="grid-text">
+            <h3>Teachers</h3>
+            <p>
+              We are proud to have a dedicated team of {{ teacher_count }} qualified teachers who are committed to
+              delivering quality education.
+            </p>
+          </div>
+        </div>
+
+        <!-- Grid item 3 -->
+        <div class="grid-item">
+          <img class="grid-image" src="{% static 'image/students-picture.jpg' %}" alt="Students">
+          <div class="grid-text">
+            <h3>Students</h3>
+            <p>
+              Our institute is home to a vibrant student community with a total of {{ student }} students currently
+              enrolled across various classes.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+
+
+
+
+
+
+  </div>
+
+
+
+  <script>
+    // Toggle sidebar on mobile
+    const toggleBtn = document.getElementById('toggleBtn');
+    const sidebar = document.getElementById('sidebar');
+
+    toggleBtn.addEventListener('click', function () {
+      sidebar.classList.toggle('active');
+    });
+  </script>
+
+</body>
+
+</html>

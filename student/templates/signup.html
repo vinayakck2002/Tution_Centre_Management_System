@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="{% static 'css/sign.css' %}">
+</head>
+<body style="background-color: #f8fafc; color: #1e293b; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+  <div class="log-container">
+    <!-- Signup form -->
+    <div class="log-form-container">
+      <div class="log-form-content">
+        <div class="log-form-header">
+          <h2>Create Account</h2>
+          <p>Get started with your premium account</p>
+        </div>
+        
+        <!-- Error message example -->
+        {% if error_message %}
+        <div class="message error-message">
+          <svg class="message-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM11 15H9V13H11V15ZM11 11H9V5H11V11Z" fill="#ef4444"/>
+          </svg>
+          <span>{{ error_message }}</span>
+        </div>
+        {% endif %}
+        
+        <!-- Success message example -->
+        {% if success_message %}
+        <div class="message success-message">
+          <svg class="message-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 0C4.48 0 0 4.48 0 10C0 15.52 4.48 20 10 20C15.52 20 20 15.52 20 10C20 4.48 15.52 0 10 0ZM8 15L3 10L4.41 8.59L8 12.17L15.59 4.58L17 6L8 15Z" fill="#16a34a"/>
+          </svg>
+          <span>{{ success_message }}</span>
+        </div>
+        {% endif %}
+        
+        <form action="{% url 'signup' %}" class="log-form" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+        
+          <div class="log-form-group">
+            <label for="fullName" class="log-form-label">Full Name</label>
+            <input type="text" id="fullName" class="log-form-input" placeholder="Enter your name" name="username" required>
+          </div>
+          
+          <div class="log-form-group">
+            <label for="email" class="log-form-label">Email Address</label>
+            <input type="email" id="email" class="log-form-input" placeholder="you@example.com" name="email" required>
+          </div>
+          
+          <div class="log-form-group">
+            <label for="password" class="log-form-label">Password</label>
+            <input type="password" id="password" class="log-form-input" placeholder="••••••••" name="password" required>
+          </div>
+          <div class="log-form-group">
+            <label for="confirmPassword" class="log-form-label">Confirm Password</label>
+            <input type="password" id="confirmPassword" class="log-form-input" placeholder="••••••••" name="confirmpassword" required>
+          </div>
+          
+          <button type="submit" class="log-form-button">Sign Up</button>
+        </form>
+        
+        <div class="log-divider">
+          <span class="log-divider-text">or continue with</span>
+        </div>
+        
+        <div class="log-login-link">
+          Already have an account? <a href="{% url 'signin' %}">Log in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

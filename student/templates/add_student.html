@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Course - Tutionary</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/add_student.css' %}">
+</head>
+
+<body>
+  <button class="toggle-btn" id="toggleBtn">☰</button>
+
+  <div class="container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <i> <img class="online-course" src="{%  static 'image/education.png' %}" alt=""> </i>
+        <h2>Tutionary</h2>
+      </div>
+
+      <ul class="nav-list">
+        <li class="nav-item">
+          <i> <img class="online-course" src="{% static 'image/online-course.png' %}" alt=""> </i>
+          <a href="{% url 'index' %}" class="nav-link">Home</a>
+        </li>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <i> <img class="online-course" src="{%  static 'image/online-course.png' %}" alt=""> </i>
+            <a href="{% url 'addcourse' %}" class="nav-link">Class</a>
+          </li>
+          <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/female.png' %}" alt=""></i>
+            <a href="{% url 'addteacher' %}" class="nav-link">Teacher</a>
+          </li>
+          <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/clock.png' %}" alt=""></i>
+            <a href="{% url 'addtime' %}" class="nav-link">Time Schedule</a>
+          </li>
+          <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/students.png' %}" alt=""></i>
+            <a href="{% url 'addstudent' %}" class="nav-link">Student</a>
+          </li>
+          <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
+            <a href="{% url 'studentlist' %}" class="nav-link">Student List</a>
+          </li>
+          <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
+            <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+          </li>
+        </ul>
+    </nav>
+
+
+    <div class="content-wrapper">
+      <div class="course-main-content">
+        <h1 class="course-heading">Student Registration</h1>
+        <div class="course-form-group">
+          {% if messages %}
+          <div class="messages">
+            {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+              {{ message }}
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+          <form method="POST" class="course-form" id="courseForm">
+            {% csrf_token %}
+
+
+
+
+          </form>
+        </div>
+
+        <form method="post" action="{% url 'addstudent' %}" class="course-form" id="courseForm"
+          enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="course-form-group">
+            <label for="first_name" class="course-label">First Name</label>
+            <input type="text" placeholder="Enter the first name" id="first_name" name="first_name" class="course-input"
+              required>
+          </div>
+
+          <div class="course-form-group">
+            <label for="last_name" class="course-label">Last Name</label>
+            <input type="text" placeholder="Enter the last name" id="last_name" name="last_name" class="course-input"
+              required>
+          </div>
+
+          <div class="course-form-group">
+            <label for="phone" class="course-label">Phone No</label>
+            <input type="tel" placeholder="Enter the phone number" id="phone" name="phone" class="course-input"
+              required>
+          </div>
+
+          <div class="course-form-group">
+            <label for="school" class="course-label">Current School</label>
+            <input type="text" placeholder="Enter the school name" id="school" name="school" class="course-input"
+              required>
+          </div>
+
+          <div class="course-form-group">
+            <label for="gender_id" class="course-label">Gender</label>
+            <div class="gender-selection-container">
+              <select id="gender_id" name="gender_id" class="course-input" required>
+                <option value="" disabled selected>Select Gender</option>
+                {% for gender in genders %}
+                <option value="{{ gender.id }}">{{ gender.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="course-form-group">
+            <label for="class_id" class="course-label">Class</label>
+            <select id="class_id" name="class_id" class="course-input" required>
+              <option value="" disabled selected>Select Class</option>
+              {% for class in classes %}
+              <option value="{{ class.id }}">{{ class.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+
+          <div class="course-form-group">
+            <label for="student_image" class="course-label">Passport Size Photo</label>
+            <input type="file" id="student_image" name="student_image" class="course-input" accept="image/*" required>
+            <small class="form-text">Please upload a passport size photo of the student (JPEG, PNG formats
+              accepted).</small>
+          </div>
+
+          <button type="submit" class="course-btn-submit">Submit</button>
+
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+
+  <script>
+    // Toggle sidebar on mobile
+    const toggleBtn = document.getElementById('toggleBtn');
+    const sidebar = document.getElementById('sidebar');
+
+    toggleBtn.addEventListener('click', function () {
+      sidebar.classList.toggle('active');
+    });
+
+
+  </script>
+</body>
+
+</html>

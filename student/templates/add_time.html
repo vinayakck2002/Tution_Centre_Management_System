@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Teacher - Tutionary</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <button class="toggle-btn" id="toggleBtn">☰</button>
+  
+  <div class="container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <i> <img class="online-course" src="{%  static 'image/education.png' %}" alt=""> </i>
+        <h2>Tutionary</h2>
+      </div>
+      
+      <ul class="nav-list">
+        <li class="nav-item">
+          <i> <img class="online-course" src="{% static 'image/online-course.png' %}" alt=""> </i>
+          <a href="{% url 'index' %}" class="nav-link">Home</a>
+        </li>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <i> <img class="online-course" src="{%  static 'image/online-course.png' %}" alt=""> </i>
+          <a href="{% url 'addcourse' %}" class="nav-link">Class</a>
+        </li>
+        <li class="nav-item">
+          <i><img class="online-course" src="{%  static 'image/female.png' %}" alt=""></i>
+          <a href="{% url 'addteacher' %}" class="nav-link">Teacher</a>
+        </li>
+        <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/clock.png' %}" alt=""></i>
+            <a href="{% url 'addtime' %}" class="nav-link">Time Schedule</a>
+        </li>
+        <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/students.png' %}" alt=""></i>
+          <a href="{% url 'addstudent' %}" class="nav-link">Student</a>
+        </li>
+        <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
+          <a href="{% url 'studentlist' %}" class="nav-link">Student List</a>
+        </li>
+        <li class="nav-item">
+          <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
+        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+      </li>
+      </ul>
+    </nav>
+
+    <div class="content-wrapper">
+      <div class="course-main-content">
+        <h1 class="course-heading">Time Schedule</h1>
+        <form method="post" action="{% url 'addtime' %}" class="course-form" id="courseForm">
+          {% csrf_token %}
+          <div class="course-form-group">
+            <label for="class_id" class="course-label">Class</label>
+            <select id="class_id" name="class_id" class="course-input" required>
+              <option value="" disabled selected>Select Class</option>
+              {% for cls in classes %}
+                <option value="{{ cls.id }}">{{ cls.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+    
+          <div class="course-form-group">
+            <label for="start" class="course-label">Start Time:</label>
+            <input placeholder="Enter The Start Time" type="text" id="start" name="start" class="course-input" required>
+          </div>
+    
+          <div class="course-form-group">
+            <label for="end" class="course-label">End Time:</label>
+            <input placeholder="Enter The End Time" type="text" id="end" name="end" class="course-input" required>
+          </div>
+    
+          <button type="submit" class="course-btn-submit">Submit</button>
+        </form>
+      </div>
+      
+      <!-- Time Schedule Grid Section -->
+      <div class="course-grid">
+        {% for time in times %}
+          <div class="course-data-display">
+            <h2>Class Information</h2>
+            <ul>
+              <li><h3>Class : <span>{{ time.classs.name }}</span></h3></li>
+              <li><p>Start Time : <span>{{ time.start }}</span></p></li>
+              <li><p>End Time : <span>{{ time.end }}</span></p></li>
+            </ul>
+            <div class="course-actions">
+              <button type="submit" class="edit-btn"><a href="{% url 'edit_time' time.id %}">Edit</a></button>
+              
+              <form method="post" action="{% url 'delete_time' time.id %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="delete-btn">Delete</button>
+              </form>
+            </div>
+          </div>
+        {% empty %}
+          <!-- Display placeholder cards if no times exist -->
+          <div class="course-data-display">
+            <h2>Class Information</h2>
+            <ul>
+              <li><h3>Class : <span>Not submitted yet</span></h3></li>
+              <li><p>Start Time : <span>Not submitted yet</span></p></li>
+              <li><p>End Time : <span>Not submitted yet</span></p></li>
+            </ul>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle sidebar on mobile
+    const toggleBtn = document.getElementById('toggleBtn');
+    const sidebar = document.getElementById('sidebar');
+    
+    toggleBtn.addEventListener('click', function() {
+      sidebar.classList.toggle('active');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Course - Tutionary</title>
+  <link rel="stylesheet" href="{% static 'css/teacher/teacher_home.css' %}">
+
+</head>
+
+<body>
+  <button class="toggle-btn" id="toggleBtn">☰</button>
+
+  <div class="container">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <i> <img class="online-course" src="{%  static 'image/education.png' %}" alt=""> </i>
+        <h2>Tutionary</h2>
+      </div>
+
+      <ul class="nav-list">
+        <li class="nav-item">
+          <i> <img class="online-course" src="{% static 'image/online-course.png' %}" alt=""> </i>
+          <a href="{% url 'teacher_home' %}" class="nav-link">Home</a>
+        </li>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <i> <img class="online-course" src="{%  static 'image/online-course.png' %}" alt=""> </i>
+            <a href="{% url 'teacher_class' %}" class="nav-link">Class</a>
+          </li>
+          <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/female.png' %}" alt=""></i>
+            <a href="{% url 'teacher_profile' %}" class="nav-link">Teacher</a>
+          </li>
+          <!-- <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/clock.png' %}" alt=""></i>
+            <a href="{% url 'addtime' %}" class="nav-link">Time Schedule</a>
+        </li> -->
+          <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
+            <a href="{% url 'teacher_student_list' %}" class="nav-link">Student List</a>
+          </li>
+          <li class="nav-item">
+            <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
+            <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+          </li>
+        </ul>
+    </nav>
+
+    <div class="content-wrapper">
+      <h1 class="course-heading"></h1>
+
+      {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+
+      <main class="panel-content">
+        <div class="panel-welcome">
+          <h3>Welcome {{ name }} <span style="color: #7f8c8d; font-weight: normal">Control panel</span></h3>
+          <div class="panel-breadcrumb">
+            <a href="#">Home</a> / Dashboard
+          </div>
+        </div>
+
+<div class="panel-stats">
+  <div class="panel-stat-box panel-stat-box-blue">
+    <div>
+      <div class="panel-stat-number">{{ student_count }}</div>
+      <div class="panel-stat-text">Students</div>
+    </div>
+    <div class="panel-stat-icon">👤</div>
+  </div>
+</div>
+
+          <!-- <div class="panel-stat-box panel-stat-box-green">
+                    <div>
+                        <div class="panel-stat-number">5</div>
+                        <div class="panel-stat-text">Teachers</div>
+                    </div>
+                    <div class="panel-stat-icon">📊</div>
+                </div> -->
+
+          <div class="panel-stat-box panel-stat-box-orange">
+            <div>
+              <div class="panel-stat-number">{{ class_name }}</div>
+              <div class="panel-stat-text">class</div>
+            </div>
+            <div class="panel-stat-icon">👤</div>
+          </div>
+
+
+        </div>
+
+
+
+
+      </main>
+
+
+
+
+
+
+    </div>
+    <script>
+      // Toggle sidebar on mobile
+      const toggleBtn = document.getElementById('toggleBtn');
+      const sidebar = document.getElementById('sidebar');
+
+      toggleBtn.addEventListener('click', function () {
+        sidebar.classList.toggle('active');
+      });
+    </script>
+</body>
+
+</html>

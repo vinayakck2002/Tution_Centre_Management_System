@@ -1,0 +1,356 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
+  display: flex;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 250px;
+  color: white;
+  background-color: #2c3e50;
+  transition: transform 0.3s ease;
+  position: fixed;
+  height: 100vh;
+  z-index: 100;
+}
+
+.sidebar-header {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.sidebar-header h2 {
+  margin-top: 10px;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+}
+
+.nav-item {
+  padding: 15px 20px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.online-course {
+  width: 20px;
+  height: 20px;
+}
+
+.nav-item:hover {
+  background-color: #34495e;
+  cursor: pointer;
+}
+
+.nav-item i {
+  margin-right: 10px;
+  width: 20px;
+  text-align: center;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  width: 100%;
+}
+
+/* Toggle button for mobile */
+.toggle-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 200;
+  display: none;
+}
+
+.toggle-btn:focus {
+  outline: none;
+}
+
+/* Content area - centered */
+.content-wrapper {
+  flex: 1;
+  margin-left: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  min-height: 100vh;
+}
+
+.course-main-content {
+  max-width: 537px;
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.course-heading {
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.course-form-group {
+  margin-bottom: 20px;
+}
+
+.course-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.course-input,
+.course-textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border 0.3s;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.course-input:focus,
+.course-textarea:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+.course-btn-submit {
+  width: 100%;
+  padding: 14px 20px;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.course-btn-submit:hover {
+  background-color: #2563eb;
+}
+
+/* Create a grid container for course cards */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Style for each course card */
+.course-data-display {
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-data-display:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.course-data-display h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #2c3e50;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #eaeaea;
+}
+
+.course-data-display ul {
+  list-style: none;
+  padding: 0;
+}
+
+.course-data-display li {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.course-data-display li:hover {
+  background-color: #f8f9fa;
+}
+
+.course-data-display h3 {
+  color: #2c3e50;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.course-data-display p {
+  color: #4a5568;
+  margin-bottom: 5px;
+  line-height: 1.5;
+}
+
+.course-data-display span {
+  font-weight: 500;
+  color: #3182ce;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 1100px) {
+  .course-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.active {
+    transform: translateX(0);
+  }
+  
+  .toggle-btn {
+    display: block;
+  }
+  
+  .content-wrapper {
+    margin-left: 0;
+    padding-top: 70px;
+  }
+  
+  .course-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* edit and delete */
+.edit-btn {
+  background-color: #3a8db7;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+.edit-btn a{
+  color: white;
+  text-decoration: none;
+}
+
+.edit-btn:hover {
+  background-color: #32749a;
+}
+.delete-btn{
+  background-color: #e04f3e;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+.delete-btn:hover {
+  background-color: #b04033;
+}
+
+  .btn-cancel {
+  display: inline-block;
+  padding: 7px;
+  margin-top: 7px;
+  background-color: #f44336;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background-color: #d32f2f; 
+}
+
+ /* Additional CSS that complements your existing styles */
+ .class-input-container {
+    margin-bottom: 10px;
+  }
+  
+  .course-btn-secondary {
+    background-color: #e2e8f0;
+    color: #2c3e50;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 5px;
+  }
+  
+  .course-btn-secondary:hover {
+    background-color: #cbd5e1;
+  }
+  
+  .new-class-input {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .new-class-input .course-input {
+    flex: 1;
+  }
+  
+  .course-btn-add {
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+  }
+  
+  .course-btn-add:hover {
+    background-color: #2563eb;
+  }
+
+  
