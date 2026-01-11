@@ -1,136 +1,218 @@
-  {% load static %}
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Course - Tutionary</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/add_course.css' %}">
+    <title>Manage Classes | Tutionary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .sidebar-item-active {
+            background: linear-gradient(90deg, #4f46e5 0%, #818cf8 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+        /* Form inputs focus effect */
+        .form-input:focus {
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
 
-  </head>
-  <body>
-    <button class="toggle-btn" id="toggleBtn">☰</button>
-    
-    <div class="container">
-      <!-- Sidebar Navigation -->
-      <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-          <i> <img class="online-course" src="{%  static 'image/education.png' %}" alt=""> </i>
-          <h2>Tutionary</h2>
-        </div>
+    <div class="flex h-screen overflow-hidden">
         
-        <ul class="nav-list">
-          <li class="nav-item">
-            <i> <img class="online-course" src="{% static 'image/online-course.png' %}" alt=""> </i>
-            <a href="{% url 'index' %}" class="nav-link">Home</a>
-          </li>
-        <ul class="nav-list">
-          <li class="nav-item">
-            <i> <img class="online-course" src="{%  static 'image/online-course.png' %}" alt=""> </i>
-            <a href="{% url 'addcourse' %}" class="nav-link">Class</a>
-          </li>
-          <li class="nav-item">
-            <i><img class="online-course" src="{%  static 'image/female.png' %}" alt=""></i>
-            <a href="{% url 'addteacher' %}" class="nav-link">Teacher</a>
-          </li>
-          <li class="nav-item">
-              <i><img class="online-course" src="{%  static 'image/clock.png' %}" alt=""></i>
-              <a href="{% url 'addtime' %}" class="nav-link">Time Schedule</a>
-          </li>
-          <li class="nav-item">
-              <i><img class="online-course" src="{%  static 'image/students.png' %}" alt=""></i>
-            <a href="{% url 'addstudent' %}" class="nav-link">Student</a>
-          </li>
-          <li class="nav-item">
-              <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
-            <a href="{% url 'studentlist' %}" class="nav-link">Student List</a>
-          </li>
-          <li class="nav-item">
-            <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
-          <a href="{% url 'logout' %}" class="nav-link">Logout</a>
-        </li>
-        </ul>
-      </nav>
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:static lg:inset-0">
+            <div class="flex flex-col h-full">
+                <div class="p-8">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-indigo-600 rounded-xl shadow-lg shadow-indigo-200">
+                            <img src="{% static 'image/education.png' %}" class="w-8 h-8 brightness-0 invert" alt="Logo">
+                        </div>
+                        <h2 class="text-xl font-bold tracking-tight text-slate-800">Tutionary</h2>
+                    </div>
+                </div>
 
-      <div class="content-wrapper">
-        <div class="course-main-content">
-          <h1 class="course-heading">Add Class</h1>
+                <nav class="flex-1 px-6 space-y-2 overflow-y-auto">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 px-4">Menu</p>
+                    
+                    <a href="{% url 'index' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/online-course.png' %}" class="w-5 h-5 opacity-60" alt=""> Dashboard
+                    </a>
+                    
+                    <a href="{% url 'addcourse' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl sidebar-item-active font-medium">
+                        <img src="{% static 'image/online-course.png' %}" class="w-5 h-5 opacity-80" alt=""> Classes
+                    </a>
 
-          {% if messages %}
-          <div class="messages">
-              {% for message in messages %}
-              <div class="alert alert-{{ message.tags }}">
-                  {{ message }}
-              </div>
-              {% endfor %}
-          </div>
-          {% endif %}
-          
-          <form method="post" action="{% url 'addcourse' %}" class="course-form" id="courseForm">
-            {% csrf_token %}
+                    <a href="{% url 'addteacher' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/female.png' %}" class="w-5 h-5 opacity-60" alt=""> Teachers
+                    </a>
+
+                    <a href="{% url 'addtime' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/clock.png' %}" class="w-5 h-5 opacity-60" alt=""> Schedule
+                    </a>
+
+                    <a href="{% url 'addstudent' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/students.png' %}" class="w-5 h-5 opacity-60" alt=""> Admission
+                    </a>
+
+                    <a href="{% url 'studentlist' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/audience.png' %}" class="w-5 h-5 opacity-60" alt=""> Student List
+                    </a>
+                </nav>
+
+                <div class="p-6 border-t border-slate-100">
+                    <a href="{% url 'logout' %}" class="flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        <span class="font-medium">Logout</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <div class="flex-1 flex flex-col min-w-0 bg-slate-50 overflow-hidden">
             
-            <div class="course-form-group">
-              <label for="course" class="course-label">Add Class</label>
-              <input type="text" id="course" placeholder="Enter the class name" name="course" class="course-input" required>
-            </div>
-        
-            <div class="course-form-group">
-              <label for="description" class="course-label">Description</label>
-              <textarea placeholder="Enter the Description" id="description" name="description" rows="4" class="course-textarea" required></textarea>
-            </div>
-        
-            <div class="course-form-group">
-              <label for="fees" class="course-label">Fees</label>
-              <input type="number" id="fees" placeholder="Enter the Fees" name="fees" class="course-input" required>
-            </div>
-        
-            <button type="submit" class="course-btn-submit">Submit</button>
-          </form>
-        </div>
-        
-        <!-- Course Grid Section -->
-        <div class="course-grid">
-          {% for course in courses %}
-          <div class="course-data-display">
-            <h2>Class Information</h2>
-            <ul>
-              <li><h3>Class: <span>{{ course.name }}</span></h3></li>
-              <li><p>Description: <span>{{ course.description }}</span></p></li>
-              <li><p>Fees: <span>{{ course.fees }}</span></p></li>
-            </ul>
-            <div class="course-actions">
-              <button type="submit" class="edit-btn"><a href="{% url 'edit_course' course.id %}">Edit</a></button>
-              
-              <form method="post" action="{% url 'delete_course' course.id %}" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="delete-btn">Delete</button>
-              </form>
-            </div>
+            <header class="bg-white border-b border-slate-200 flex items-center justify-between px-6 py-4 lg:hidden">
+                <div class="flex items-center gap-2">
+                    <img src="{% static 'image/education.png' %}" class="w-6 h-6" alt="Logo">
+                    <span class="font-bold text-slate-800">Tutionary</span>
+                </div>
+                <button id="mobile-toggle" class="text-slate-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </header>
 
-          </div>
-          {% empty %}
-            <!-- Display placeholder cards if no courses exist -->
-            <div class="course-data-display">
-              <h2>Class Information</h2>
-              <ul>
-                <li><h3>Class: <span>Not submitted yet</span></h3></li>
-                <li><p>Description: <span>Not submitted yet</span></p></li>
-                <li><p>Fees: <span>Not submitted yet</span></p></li>
-              </ul>
-            </div>
-          {% endfor %}
+            <main class="flex-1 overflow-y-auto p-4 lg:p-8">
+                <div class="max-w-7xl mx-auto">
+                    
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+                        <div>
+                            <h1 class="text-2xl font-bold text-slate-900">Class Management</h1>
+                            <p class="text-slate-500 mt-1">Add new classes and manage existing ones.</p>
+                        </div>
+                    </div>
+
+                    {% if messages %}
+                        <div class="mb-6 space-y-2">
+                            {% for message in messages %}
+                            <div class="p-4 rounded-xl text-sm font-medium 
+                                {% if message.tags == 'success' %} bg-emerald-50 text-emerald-700 border border-emerald-200
+                                {% elif message.tags == 'error' %} bg-red-50 text-red-700 border border-red-200
+                                {% else %} bg-blue-50 text-blue-700 border border-blue-200 {% endif %}">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        
+                        <div class="lg:col-span-4">
+                            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sticky top-6">
+                                <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                    <span class="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                    </span>
+                                    Add New Class
+                                </h3>
+                                
+                                <form method="post" action="{% url 'addcourse' %}" class="space-y-5">
+                                    {% csrf_token %}
+                                    
+                                    <div>
+                                        <label for="course" class="block text-sm font-medium text-slate-700 mb-1">Class Name</label>
+                                        <input type="text" id="course" name="course" placeholder="e.g. Class 10 - Mathematics" 
+                                            class="form-input w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-indigo-500 focus:outline-none transition-colors" required>
+                                    </div>
+
+                                    <div>
+                                        <label for="description" class="block text-sm font-medium text-slate-700 mb-1">Description</label>
+                                        <textarea id="description" name="description" rows="4" placeholder="Enter course details..." 
+                                            class="form-input w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-indigo-500 focus:outline-none transition-colors" required></textarea>
+                                    </div>
+
+                                    <div>
+                                        <label for="fees" class="block text-sm font-medium text-slate-700 mb-1">Fees (₹)</label>
+                                        <div class="relative">
+                                            <span class="absolute left-3 top-2.5 text-slate-500">₹</span>
+                                            <input type="number" id="fees" name="fees" placeholder="0.00" 
+                                                class="form-input w-full pl-8 pr-4 py-2.5 rounded-lg border border-slate-300 focus:border-indigo-500 focus:outline-none transition-colors" required>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="w-full bg-indigo-600 text-white font-semibold py-3 px-4 rounded-xl hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 transition-all shadow-lg shadow-indigo-200">
+                                        Create Class
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-8">
+                            <h3 class="text-lg font-bold text-slate-800 mb-4">Available Classes</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {% for course in courses %}
+                                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow group">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="text-lg font-bold text-slate-900">{{ course.name }}</h4>
+                                        <span class="px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-full border border-emerald-100">
+                                            ₹{{ course.fees }}
+                                        </span>
+                                    </div>
+                                    
+                                    <p class="text-slate-500 text-sm leading-relaxed mb-4 line-clamp-3">
+                                        {{ course.description }}
+                                    </p>
+                                    
+                                    <div class="flex items-center justify-end gap-2 pt-4 border-t border-slate-100 mt-auto">
+                                        <a href="{% url 'edit_course' course.id %}" class="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Edit">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 00 2 2h11a2 2 0 00 2-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                        </a>
+                                        
+                                        <form method="post" action="{% url 'delete_course' course.id %}" onsubmit="return confirm('Are you sure you want to delete this class?');">
+                                            {% csrf_token %}
+                                            <button type="submit" class="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <div class="col-span-full py-12 text-center bg-white rounded-2xl border border-dashed border-slate-300">
+                                    <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <svg class="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                                    </div>
+                                    <h3 class="text-lg font-medium text-slate-900">No classes yet</h3>
+                                    <p class="text-slate-500">Fill out the form on the left to create your first class.</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
         </div>
-      </div>
     </div>
+
     <script>
-      // Toggle sidebar on mobile
-      const toggleBtn = document.getElementById('toggleBtn');
-      const sidebar = document.getElementById('sidebar');
-      
-      toggleBtn.addEventListener('click', function() {
-        sidebar.classList.toggle('active');
-      });
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const sidebar = document.getElementById('sidebar');
+
+        mobileToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+        });
+
+        // Close sidebar when clicking outside (Mobile)
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth < 1024) {
+                if (!sidebar.contains(e.target) && !mobileToggle.contains(e.target)) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            }
+        });
     </script>
-  </body>
-  </html>
+</body>
+</html>

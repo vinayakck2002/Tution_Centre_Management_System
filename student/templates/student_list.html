@@ -1,595 +1,293 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">  
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Sidebar Navigation</title>
-  <link rel="stylesheet" href="{% static 'css/student_list.css' %}">
-<style>
-  * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
-
-body {
-  background-color: #f5f5f5;
-  display: flex;
-}
-
-.container {
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-}
-
-/* Sidebar styles */
-.sidebar {
-  width: 250px;
-  color: white;
-  background-color: #2c3e50;
-  transition: transform 0.3s ease;
-  position: fixed;
-  height: 100vh;
-  z-index: 100;
-}
-
-.sidebar-header {
-  padding: 60px 20px;
-  text-align: center;
-}
-
-.sidebar-header h2 {
-  margin-top: 10px;
-}
-
-.nav-list {
-  list-style: none;
-  padding: 0;
-}
-
-.nav-item {
-  padding: 15px 20px;
-  transition: background-color 0.2s;
-  display: flex;
-  align-items: center;
-}
-
-.online-course {
-  width: 20px;
-  height: 20px;
-}
-
-.nav-item:hover {
-  background-color: #34495e;
-  cursor: pointer;
-}
-
-.nav-item i {
-  margin-right: 10px;
-  width: 20px;
-  text-align: center;
-}
-
-.nav-link {
-  color: white;
-  text-decoration: none;
-  width: 100%;
-}
-
-/* Toggle button for mobile */
-.toggle-btn {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  background-color: #2c3e50;
-  color: white;
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  cursor: pointer;
-  z-index: 200;
-  display: none;
-}
-
-.toggle-btn:focus {
-  outline: none;
-}
-
-/* Content area - centered */
-.content-wrapper {
-  flex: 1;
-  margin-left: 250px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-  min-height: 100vh;
-}
-
-.course-main-content {
-  max-width: 712px;
-  width: 100%;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  margin-bottom: 30px;
-}
-
-.course-heading {
-  font-size: 28px;
-  margin-bottom: 25px;
-  color: #2c3e50;
-  text-align: center;
-}
-
-.course-form-group {
-  margin-bottom: 20px;
-}
-
-.course-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #2c3e50;
-}
-
-.course-input,
-.course-textarea {
-  width: 100%;
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: border 0.3s;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-}
-
-.course-input:focus,
-.course-textarea:focus {
-  border-color: #3b82f6;
-  outline: none;
-}
-
-.course-btn-submit {
-  width: 100%;
-  padding: 14px 20px;
-  background-color: #2c3e50;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
-  transition: background-color 0.3s;
-}
-
-.course-btn-submit:hover {
-  background-color: #2563eb;
-}
-
-/* Create a grid container for course cards */
-.course-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  width: 100%;
-  max-width: 1200px;
-}
-
-/* Style for each course card */
-.course-data-display {
-  width: 100%;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  padding: 25px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.course-data-display:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-}
-
-.course-data-display h2 {
-  font-size: 20px;
-  margin-bottom: 15px;
-  color: #2c3e50;
-  text-align: center;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #eaeaea;
-}
-
-.course-data-display ul {
-  list-style: none;
-  padding: 0;
-}
-
-.course-data-display li {
-  margin-bottom: 15px;
-  padding: 10px;
-  border-radius: 6px;
-  transition: background-color 0.2s ease;
-}
-
-.course-data-display li:hover {
-  background-color: #f8f9fa;
-}
-
-.course-data-display h3 {
-  color: #2c3e50;
-  font-size: 18px;
-  margin-bottom: 5px;
-}
-
-.course-data-display p {
-  color: #4a5568;
-  margin-bottom: 5px;
-  line-height: 1.5;
-}
-
-.course-data-display span {
-  font-weight: 500;
-  color: #3182ce;
-}
-
-/* Responsive adjustments */
-@media screen and (max-width: 1100px) {
-  .course-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .sidebar {
-    transform: translateX(-100%);
-  }
-  
-  .sidebar.active {
-    transform: translateX(0);
-  }
-  
-  .toggle-btn {
-    display: block;
-  }
-  
-  .content-wrapper {
-    margin-left: 0;
-    padding-top: 70px;
-  }
-  
-  .course-grid {
-    grid-template-columns: 1fr;
-  }
-}
-/* edit and delete */
-.edit-btn {
-  background-color: #3a8db7;
-  color: white;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-}
-.edit-btn a{
-  color: white;
-  text-decoration: none;
-}
-
-.edit-btn:hover {
-  background-color: #32749a;
-}
-.delete-btn{
-  background-color: #e04f3e;
-  color: white;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-}
-.delete-btn:hover {
-  background-color: #b04033;
-}
-
-  .btn-cancel {
-  display: inline-block;
-  padding: 7px;
-  margin-top: 7px;
-  background-color: #f44336;
-  color: white;
-  text-decoration: none;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-.btn-cancel:hover {
-  background-color: #d32f2f; 
-}
-
-    /* Search bar styles */
-    .search-container {
-      margin: 20px 0;
-      width: 100%;
-      max-width: 500px;
-    }
-    
-    .search-input {
-      width: 100%;
-      padding: 12px 20px;
-      border: 2px solid #ddd;
-      border-radius: 25px;
-      font-size: 16px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-    }
-    
-    .search-input:focus {
-      outline: none;
-      border-color: #4a90e2;
-      box-shadow: 0 2px 10px rgba(74, 144, 226, 0.3);
-    }
-    
-    .search-icon {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #888;
-    }
-    
-    .no-results {
-      padding: 20px;
-      text-align: center;
-      background-color: #f9f9f9;
-      border-radius: 8px;
-      margin: 20px 0;
-      font-size: 16px;
-      color: #666;
-    }
-    
-    /* Table styles */
-    .student-table-container {
-      width: 100%;
-    }
-    
-    .student-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      background: white;
-    }
-    
-    .student-table th, 
-    .student-table td {
-      padding: 12px 15px;
-      text-align: left;
-      border-bottom: 1px solid #e0e0e0;
-    }
-    
-    .student-table th {
-      background-color: #f5f5f5;
-      color: #333;
-      font-weight: bold;
-    }
-    
-    .student-table tr:hover {
-      background-color: #f9f9f9;
-    }
-    
-    .student-table .action-buttons {
-      display: flex;
-      gap: 10px;
-    }
-    
-    .student-table .edit-btn,
-    .student-table .delete-btn {
-      padding: 6px 12px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .student-table .edit-btn {
-      background-color: #4a90e2;
-      color: white;
-    }
-    
-    .student-table .edit-btn a {
-      color: white;
-      text-decoration: none;
-    }
-    
-    .student-table .delete-btn {
-      background-color: #e53935;
-      color: white;
-    }
-    
-    .student-table .edit-btn:hover {
-      background-color: #3a7bc8;
-    }
-    
-    .student-table .delete-btn:hover {
-      background-color: #d32f2f;
-    }
-    
-    /* Student image styles */
-    .student-img-cell {
-      width: 60px;
-    }
-    
-    .student-img-small {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student List | Tutionary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .sidebar-item-active {
+            background: linear-gradient(90deg, #4f46e5 0%, #818cf8 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+        .custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
 </head>
-<body>
-    <button class="toggle-btn" id="toggleBtn">☰</button>
-  
-    <div class="container">
-      <!-- Sidebar Navigation -->
-      <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-          <i> <img class="online-course" src="{%  static 'image/education.png' %}" alt=""> </i>
-          <h2>Tutionary</h2>
-        </div>  
-        
-        <ul class="nav-list">
-          <li class="nav-item">
-            <i> <img class="online-course" src="{% static 'image/online-course.png' %}" alt=""> </i>
-            <a href="{% url 'index' %}" class="nav-link">Home</a>
-          </li>
-        <ul class="nav-list">
-          <li class="nav-item">
-            <i> <img class="online-course" src="{%  static 'image/online-course.png' %}" alt=""> </i>
-            <a href="{% url 'addcourse' %}" class="nav-link">Class</a>
-          </li>
-          <li class="nav-item">
-            <i><img class="online-course" src="{%  static 'image/female.png' %}" alt=""></i>
-            <a href="{% url 'addteacher' %}" class="nav-link">Teacher</a>
-          </li>
-          <li class="nav-item">
-              <i><img class="online-course" src="{%  static 'image/clock.png' %}" alt=""></i>
-              <a href="{% url 'addtime' %}" class="nav-link">Time Schedule</a>
-          </li>
-          <li class="nav-item">
-              <i><img class="online-course" src="{%  static 'image/students.png' %}" alt=""></i>
-            <a href="{% url 'addstudent' %}" class="nav-link">Student</a>
-          </li>
-          <li class="nav-item">
-              <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
-            <a href="{% url 'studentlist' %}" class="nav-link">Student List</a>
-          </li>
-          <li class="nav-item">
-            <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
-          <a href="{% url 'logout' %}" class="nav-link">Logout</a>
-        </li>
-        </ul>
-      </nav>
-      
-      <div class="content-wrapper">
-        <div class="course-main-content">
-          <h1 class="course-heading">Student List</h1>
-          
-          {% if messages %}
-            <div class="messages">
-              {% for message in messages %}
-                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                  {{ message }}
+<body class="bg-slate-50 text-slate-900">
+
+    <div id="deleteModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" onclick="closeDeleteModal()"></div>
+
+        <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md p-6">
+                
+                <div class="flex flex-col items-center text-center">
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 mb-4">
+                        <svg class="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                        </svg>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold leading-6 text-gray-900" id="modal-title">Delete Student?</h3>
+                    <div class="mt-2">
+                        <p class="text-sm text-gray-500">
+                            Are you sure you want to remove this student? This action cannot be undone.
+                        </p>
+                    </div>
                 </div>
-              {% endfor %}
-            </div>
-          {% endif %}
-          
-          <!-- Search Bar -->
-          <div class="search-container">
-            <input type="text" id="studentSearch" class="search-input" placeholder="Search students by name..." onkeyup="searchStudents()">
-          </div>
-          
-          <div class="student-table-container" id="studentCards">
-            {% if students %}
-              <table class="student-table">
-                <thead>
-                  <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>School</th>
-                    <th>Class</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for student in students %}
-                  <tr class="student-row" data-student-name="{{ student.fname|lower }} {{ student.lname|lower }}">
-                    <td class="student-img-cell">
-                      {% if student.image %}
-                        <img class="student-img-small" src="{{ student.image.url }}" alt="{{ student.fname }} {{ student.lname }}">
-                      {% else %}
-                        <img class="student-img-small" src="{% static 'image/default-student.png' %}" alt="Default Student Image">
-                      {% endif %}
-                    </td>
-                    <td>{{ student.fname }} {{ student.lname }}</td>
-                    <td>{{ student.phno }}</td>
-                    <td>{{ student.current_school }}</td>
-                    <td>{{ student.classs.name }}</td>
-                    <td class="action-buttons">
-                      <button type="submit" class="edit-btn"><a href="{% url 'edit_student' student.id %}">Edit</a></button>
-                      <form method="post" action="{% url 'delete_student' student.id %}" style="display: inline;">
+
+                <div class="mt-6 flex gap-3">
+                    <button type="button" class="w-full inline-flex justify-center rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" onclick="closeDeleteModal()">Cancel</button>
+                    
+                    <form id="deleteForm" method="post" action="" class="w-full">
                         {% csrf_token %}
-                        <button type="submit" class="delete-btn">Delete</button>
-                      </form>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            {% else %}
-              <div class="no-students">
-                <p>No students registered yet.</p>
-              </div>
-            {% endif %}
-          </div>
-          
-          <!-- No results message (hidden by default) -->
-          <div class="no-results" id="noResults" style="display: none;">
-            <p>No students found matching your search.</p>
-          </div>
-
+                        <button type="submit" class="w-full inline-flex justify-center rounded-xl bg-red-600 px-3 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500">Delete</button>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-    
-    <script>
-      // Toggle sidebar on mobile
-      const toggleBtn = document.getElementById('toggleBtn');
-      const sidebar = document.getElementById('sidebar');
-      
-      toggleBtn.addEventListener('click', function() {
-        sidebar.classList.toggle('active');
-      });
-      
-      // Search functionality
-      function searchStudents() {
-        const searchInput = document.getElementById('studentSearch');
-        const filter = searchInput.value.toLowerCase();
-        const studentRows = document.getElementsByClassName('student-row');
-        const noResultsDiv = document.getElementById('noResults');
+    <div class="flex h-screen overflow-hidden">
         
-        let foundMatch = false;
-        
-        for (let i = 0; i < studentRows.length; i++) {
-          const studentName = studentRows[i].getAttribute('data-student-name');
-          if (studentName.indexOf(filter) > -1) {
-            studentRows[i].style.display = "";
-            foundMatch = true;
-          } else {
-            studentRows[i].style.display = "none";
-          }
-        }
-        
-        // Show or hide the "no results" message
-        if (foundMatch) {
-          noResultsDiv.style.display = "none";
-        } else {
-          noResultsDiv.style.display = "block";
-        }
-      }
-    </script>
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:static lg:inset-0">
+            <div class="flex flex-col h-full">
+                <div class="p-8">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-indigo-600 rounded-xl shadow-lg shadow-indigo-200">
+                            <img src="{% static 'image/education.png' %}" class="w-8 h-8 brightness-0 invert" alt="Logo">
+                        </div>
+                        <h2 class="text-xl font-bold tracking-tight text-slate-800">Tutionary</h2>
+                    </div>
+                </div>
 
+                <nav class="flex-1 px-6 space-y-2 overflow-y-auto">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 px-4">Menu</p>
+                    
+                    <a href="{% url 'index' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/online-course.png' %}" class="w-5 h-5 opacity-60" alt=""> Dashboard
+                    </a>
+                    
+                    <a href="{% url 'addcourse' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/online-course.png' %}" class="w-5 h-5 opacity-60" alt=""> Classes
+                    </a>
+
+                    <a href="{% url 'addteacher' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/female.png' %}" class="w-5 h-5 opacity-60" alt=""> Teachers
+                    </a>
+
+                    <a href="{% url 'addtime' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/clock.png' %}" class="w-5 h-5 opacity-60" alt=""> Schedule
+                    </a>
+
+                    <a href="{% url 'addstudent' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/students.png' %}" class="w-5 h-5 opacity-60" alt=""> Admission
+                    </a>
+
+                    <a href="{% url 'studentlist' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl sidebar-item-active font-medium">
+                        <img src="{% static 'image/audience.png' %}" class="w-5 h-5 opacity-80" alt=""> Student List
+                    </a>
+                </nav>
+
+                <div class="p-6 border-t border-slate-100">
+                    <a href="{% url 'logout' %}" class="flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        <span class="font-medium">Logout</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <div class="flex-1 flex flex-col min-w-0 bg-slate-50 overflow-hidden">
+            
+            <header class="bg-white border-b border-slate-200 flex items-center justify-between px-6 py-4 lg:hidden">
+                <div class="flex items-center gap-2">
+                    <img src="{% static 'image/education.png' %}" class="w-6 h-6" alt="Logo">
+                    <span class="font-bold text-slate-800">Tutionary</span>
+                </div>
+                <button id="mobile-toggle" class="text-slate-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </header>
+
+            <main class="flex-1 overflow-y-auto p-4 lg:p-8">
+                <div class="max-w-7xl mx-auto">
+                    
+                    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+                        <div>
+                            <h1 class="text-2xl font-bold text-slate-900">Student Directory</h1>
+                            <p class="text-slate-500 mt-1">Manage and view all enrolled students.</p>
+                        </div>
+                        
+                        <div class="relative w-full md:w-72">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            </span>
+                            <input type="text" id="studentSearch" onkeyup="searchStudents()" 
+                                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all" 
+                                placeholder="Search by name...">
+                        </div>
+                    </div>
+
+                    {% if messages %}
+                        <div class="mb-6 space-y-2">
+                            {% for message in messages %}
+                            <div class="p-4 rounded-xl text-sm font-medium 
+                                {% if message.tags == 'success' %} bg-emerald-50 text-emerald-700 border border-emerald-200
+                                {% elif message.tags == 'error' %} bg-red-50 text-red-700 border border-red-200
+                                {% else %} bg-blue-50 text-blue-700 border border-blue-200 {% endif %}">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="overflow-x-auto custom-scroll">
+                            <table class="w-full whitespace-nowrap text-left">
+                                <thead class="bg-slate-50 border-b border-slate-100">
+                                    <tr>
+                                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Student</th>
+                                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Contact</th>
+                                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">School Info</th>
+                                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Class</th>
+                                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    {% for student in students %}
+                                    <tr class="student-row hover:bg-slate-50 transition-colors group" data-student-name="{{ student.fname|lower }} {{ student.lname|lower }}">
+                                        
+                                        <td class="px-6 py-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 rounded-full bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200">
+                                                    {% if student.image %}
+                                                        <img src="{{ student.image.url }}" class="w-full h-full object-cover" alt="Student">
+                                                    {% else %}
+                                                        <div class="w-full h-full flex items-center justify-center text-slate-400">
+                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-semibold text-slate-900">{{ student.fname }} {{ student.lname }}</p>
+                                                    <p class="text-xs text-slate-500">Student ID: #{{ student.id }}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <td class="px-6 py-4">
+                                            <p class="text-sm text-slate-600 font-medium font-mono">{{ student.phno }}</p>
+                                        </td>
+
+                                        <td class="px-6 py-4">
+                                            <p class="text-sm text-slate-600 truncate max-w-[200px]" title="{{ student.current_school }}">
+                                                {{ student.current_school }}
+                                            </p>
+                                        </td>
+
+                                        <td class="px-6 py-4">
+                                            <span class="inline-flex px-2.5 py-0.5 rounded-md text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">
+                                                {{ student.classs.name }}
+                                            </span>
+                                        </td>
+
+                                        <td class="px-6 py-4 text-right">
+                                            <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <a href="{% url 'edit_student' student.id %}" class="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Edit">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                                </a>
+                                                
+                                                <button type="button" onclick="confirmDelete('{% url 'delete_student' student.id %}')" class="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="5" class="px-6 py-12 text-center text-slate-500 bg-white">
+                                            <div class="flex flex-col items-center">
+                                                <div class="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mb-3">
+                                                    <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                                </div>
+                                                <p>No students registered yet.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div id="noResults" class="hidden px-6 py-12 text-center text-slate-500 bg-white">
+                            <p>No students found matching your search.</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const modal = document.getElementById('deleteModal');
+        const deleteForm = document.getElementById('deleteForm');
+
+        // Sidebar Toggle
+        mobileToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+        });
+
+        // Close sidebar on outside click
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth < 1024) {
+                if (!sidebar.contains(e.target) && !mobileToggle.contains(e.target)) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            }
+        });
+
+        // Search Function
+        function searchStudents() {
+            const searchInput = document.getElementById('studentSearch');
+            const filter = searchInput.value.toLowerCase();
+            const studentRows = document.getElementsByClassName('student-row');
+            const noResultsDiv = document.getElementById('noResults');
+            let foundMatch = false;
+            
+            for (let i = 0; i < studentRows.length; i++) {
+                const studentName = studentRows[i].getAttribute('data-student-name');
+                if (studentName.indexOf(filter) > -1) {
+                    studentRows[i].style.display = "";
+                    foundMatch = true;
+                } else {
+                    studentRows[i].style.display = "none";
+                }
+            }
+            
+            if (foundMatch) {
+                noResultsDiv.classList.add('hidden');
+            } else {
+                noResultsDiv.classList.remove('hidden');
+            }
+        }
+
+        // Modal Functions
+        function confirmDelete(url) {
+            deleteForm.action = url; // Set the action URL dynamically
+            modal.classList.remove('hidden');
+        }
+
+        function closeDeleteModal() {
+            modal.classList.add('hidden');
+        }
+    </script>
 </body>
 </html>

@@ -1,254 +1,182 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Sidebar Navigation</title>
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <link rel="stylesheet" href="{% static 'css/index.css' %}">
-  <style>
-    .tracker-container {
-      max-width: 300px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      padding: 20px;
-      margin: 30px auto;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .title {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--text-color);
-    }
-
-    .grade-selector {
-      padding: 6px 12px;
-      border-radius: 20px;
-      border: 1px solid #ddd;
-      background-color: white;
-      font-size: 14px;
-      color: var(--text-color);
-      cursor: pointer;
-      outline: none;
-    }
-
-    .donut-chart-container {
-      position: relative;
-      width: 180px;
-      height: 180px;
-      margin: 0 auto 30px;
-    }
-
-    .donut-chart {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-
-      background: conic-gradient(var(--blue-color) 0% {
-            {
-            boys_percentage
-          }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutionary | Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
-
-        %,
-        var(--yellow-color) {
-            {
-            boys_percentage
-          }
+        .sidebar-item-active {
+            background: linear-gradient(90deg, #4f46e5 0%, #818cf8 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
         }
-
-        % 100%);
-      transform: rotate(-90deg);
-    }
-
-    .donut-hole {
-      position: absolute;
-      width: 60%;
-      height: 60%;
-      background-color: white;
-      border-radius: 50%;
-      top: 20%;
-      left: 20%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .total-label {
-      font-size: 12px;
-      color: #888;
-      margin-bottom: -5px;
-    }
-
-    .total-count {
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--text-color);
-    }
-
-    .legend {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 10px;
-    }
-
-    .legend-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .legend-color {
-      width: 12px;
-      height: 12px;
-      border-radius: 4px;
-      margin-bottom: 8px;
-    }
-
-    .yellow {
-      background-color: var(--yellow-color);
-    }
-
-    .blue {
-      background-color: var(--blue-color);
-    }
-
-    .legend-text {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 2px;
-    }
-
-    .legend-number {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--text-color);
-    }
-  </style>
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    </style>
 </head>
+<body class="bg-slate-50 text-slate-900">
 
-<body>
-  <button class="toggle-btn" id="toggleBtn">☰</button>
+    <div class="flex h-screen overflow-hidden">
+        
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:static lg:inset-0">
+            <div class="flex flex-col h-full">
+                <div class="p-8">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-indigo-600 rounded-xl shadow-lg shadow-indigo-200">
+                            <img src="{% static 'image/education.png' %}" class="w-8 h-8 brightness-0 invert" alt="Logo">
+                        </div>
+                        <h2 class="text-xl font-bold tracking-tight text-slate-800">Tutionary</h2>
+                    </div>
+                </div>
 
-  <div class="container">
-    <nav class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <i> <img class="online-course" src="{%  static 'image/education.png' %}" alt=""> </i>
-        <h2>Tutionary</h2>
-      </div>
+                <nav class="flex-1 px-6 space-y-2 overflow-y-auto">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 px-4">Menu</p>
+                    
+                    <a href="{% url 'index' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl sidebar-item-active font-medium">
+                        <img src="{% static 'image/online-course.png' %}" class="w-5 h-5 opacity-80" alt=""> Dashboard
+                    </a>
+                    
+                    <a href="{% url 'addcourse' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/online-course.png' %}" class="w-5 h-5 opacity-60" alt=""> Classes
+                    </a>
 
-      <ul class="nav-list">
-        <li class="nav-item">
-          <i> <img class="online-course" src="{% static 'image/online-course.png' %}" alt=""> </i>
-          <a href="{% url 'index' %}" class="nav-link">Home</a>
-        </li>
-        <ul class="nav-list">
-          <li class="nav-item">
-            <i> <img class="online-course" src="{%  static 'image/online-course.png' %}" alt=""> </i>
-            <a href="{% url 'addcourse' %}" class="nav-link">Class</a>
-          </li>
-          <li class="nav-item">
-            <i><img class="online-course" src="{%  static 'image/female.png' %}" alt=""></i>
-            <a href="{% url 'addteacher' %}" class="nav-link">Teacher</a>
-          </li>
-          <li class="nav-item">
-            <i><img class="online-course" src="{%  static 'image/clock.png' %}" alt=""></i>
-            <a href="{% url 'addtime' %}" class="nav-link">Time Schedule</a>
-          </li>
-          <li class="nav-item">
-            <i><img class="online-course" src="{%  static 'image/students.png' %}" alt=""></i>
-            <a href="{% url 'addstudent' %}" class="nav-link">Student</a>
-          </li>
-          <li class="nav-item">
-            <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
-            <a href="{% url 'studentlist' %}" class="nav-link">Student List</a>
-          </li>
-          <li class="nav-item">
-            <i><img class="online-course" src="{%  static 'image/audience.png' %}" alt=""></i>
-            <a href="{% url 'logout' %}" class="nav-link">Logout</a>
-          </li>
-        </ul>
-    </nav>
-    <div class="main-content">
-      <h1 style='text-align: center; margin: 10px 0  30px 0;'>Tution Centre</h1>
-      <p style='text-align: center; max-width: 800px; margin: 0 auto 20px auto;'>Tutionary in Calicut provides the best
-        offline tuition classes with expert teachers and a friendly atmosphere. Get personal attention and well-planned
-        lessons to help you succeed. The top choice for a trusted Tuition Centre in calicut</p>
-        <div class="image-grid">
-        <!-- Grid item 1 -->
-        <div class="grid-item">
-          <img class="grid-image" src="{% static 'image/empty-classroom.jpg' %}" alt="class rooms">
-          <div class="grid-text">
-            <h3>Class</h3>
-            <p>
-              Our institute currently offers classes including
-              {% for cls in classes %}
-              {{ cls.name }}{% if forloop.revcounter == 2 %}, and {% elif not forloop.last %}, {% endif %}
-              {% endfor %}. We are committed to providing quality education across all levels.
-            </p>
+                    <a href="{% url 'addteacher' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/female.png' %}" class="w-5 h-5 opacity-60" alt=""> Teachers
+                    </a>
 
+                    <a href="{% url 'addtime' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/clock.png' %}" class="w-5 h-5 opacity-60" alt=""> Schedule
+                    </a>
 
-          </div>
+                    <a href="{% url 'addstudent' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/students.png' %}" class="w-5 h-5 opacity-60" alt=""> Admission
+                    </a>
+
+                    <a href="{% url 'studentlist' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/audience.png' %}" class="w-5 h-5 opacity-60" alt=""> Student List
+                    </a>
+                </nav>
+
+                <div class="p-6 border-t border-slate-100">
+                    <a href="{% url 'logout' %}" class="flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        <span class="font-medium">Logout</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <div class="flex-1 flex flex-col min-w-0 bg-slate-50 overflow-hidden">
+            
+            <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 z-10">
+                <button id="mobile-toggle" class="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <div class="hidden md:block">
+                    <h1 class="text-sm font-medium text-slate-500">Welcome back, <span class="text-slate-900 font-bold">Admin 👋</span></h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">A</div>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto p-8">
+                <div class="max-w-7xl mx-auto space-y-8">
+                    
+                    <div class="relative overflow-hidden rounded-[2rem] bg-indigo-900 p-10 text-white shadow-2xl shadow-indigo-200">
+                        <div class="relative z-10 max-w-2xl">
+                            <h2 class="text-3xl md:text-4xl font-extrabold mb-4">Tutionary Calicut</h2>
+                            <p class="text-indigo-100 text-lg leading-relaxed opacity-90">
+                                Leading the way in quality offline education. Expert teachers, 
+                                personalized attention, and a result-oriented approach.
+                            </p>
+                        </div>
+                        <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-indigo-500/20 rounded-full"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        
+                        <div class="glass-card p-8 rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="p-3 bg-blue-100 rounded-2xl text-blue-600">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                </div>
+                                <h3 class="font-bold text-slate-800">Total Classes</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                {% for cls in classes %}
+                                <span class="px-3 py-1 bg-white border border-slate-100 rounded-full text-xs font-semibold text-slate-600 shadow-sm">{{ cls.name }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-8 rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="p-3 bg-emerald-100 rounded-2xl text-emerald-600">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                </div>
+                                <h3 class="font-bold text-slate-800">Expert Faculty</h3>
+                            </div>
+                            <p class="text-4xl font-black text-slate-900">{{ teacher_count }}</p>
+                            <p class="text-sm text-slate-500 mt-2 italic">Qualified educators on board</p>
+                        </div>
+
+                        <div class="glass-card p-8 rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="p-3 bg-amber-100 rounded-2xl text-amber-600">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                                </div>
+                                <h3 class="font-bold text-slate-800">Students Enrolled</h3>
+                            </div>
+                            <p class="text-4xl font-black text-slate-900">{{ student }}</p>
+                            <p class="text-sm text-slate-500 mt-2 italic">Active student community</p>
+                        </div>
+
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="rounded-[2rem] overflow-hidden shadow-lg border border-white">
+                            <img src="{% static 'image/empty-classroom.jpg' %}" class="w-full h-64 object-cover" alt="Classroom">
+                        </div>
+                        <div class="flex flex-col justify-center space-y-4">
+                            <h3 class="text-2xl font-bold text-slate-800 italic">Modern Learning Environment</h3>
+                            <p class="text-slate-600 leading-relaxed">
+                                We believe in providing the right infrastructure and environment for students to focus and excel in their studies.
+                            </p>
+                            <div class="flex gap-4">
+                                <button class="px-6 py-3 bg-white border border-slate-200 rounded-xl font-bold text-slate-700 shadow-sm hover:bg-slate-50">View Gallery</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
         </div>
-
-        <!-- Grid item 2 -->
-        <div class="grid-item">
-          <img class="grid-image" src="{% static 'image/World-Teachers-Day.jpg' %}" alt="Teacher">
-          <div class="grid-text">
-            <h3>Teachers</h3>
-            <p>
-              We are proud to have a dedicated team of {{ teacher_count }} qualified teachers who are committed to
-              delivering quality education.
-            </p>
-          </div>
-        </div>
-
-        <!-- Grid item 3 -->
-        <div class="grid-item">
-          <img class="grid-image" src="{% static 'image/students-picture.jpg' %}" alt="Students">
-          <div class="grid-text">
-            <h3>Students</h3>
-            <p>
-              Our institute is home to a vibrant student community with a total of {{ student }} students currently
-              enrolled across various classes.
-            </p>
-          </div>
-        </div>
-
-      </div>
     </div>
-    
 
+    <script>
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const sidebar = document.getElementById('sidebar');
 
+        mobileToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+        });
 
-
-
-
-  </div>
-
-
-
-  <script>
-    // Toggle sidebar on mobile
-    const toggleBtn = document.getElementById('toggleBtn');
-    const sidebar = document.getElementById('sidebar');
-
-    toggleBtn.addEventListener('click', function () {
-      sidebar.classList.toggle('active');
-    });
-  </script>
-
+        // Close sidebar when resizing to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.remove('-translate-x-full');
+            }
+        });
+    </script>
 </body>
-
 </html>

@@ -2,213 +2,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student List - Tutionary</title>
-  <link rel="stylesheet" href="{% static 'css/teacher/teacher_studentlist.css' %}">
-  <style>
-    /* Search bar styles */
-    .search-container {
-      margin: 20px 0;
-      width: 100%;
-      max-width: 500px;
-    }
-    
-    .search-input {
-      width: 100%;
-      padding: 12px 20px;
-      border: 2px solid #ddd;
-      border-radius: 25px;
-      font-size: 16px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-    }
-    
-    .search-input:focus {
-      outline: none;
-      border-color: #4a90e2;
-      box-shadow: 0 2px 10px rgba(74, 144, 226, 0.3);
-    }
-    
-    .no-results {
-      padding: 20px;
-      text-align: center;
-      background-color: #f9f9f9;
-      border-radius: 8px;
-      margin: 20px 0;
-      font-size: 16px;
-      color: #666;
-    }
-
-    /* Student image styles */
-    .student-image {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #e0e0e0;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    /* Responsive table with better spacing for images */
-    .styled-table {
-      border-collapse: separate;
-      border-spacing: 0;
-    }
-
-    .styled-table td {
-      vertical-align: middle;
-      padding: 12px 15px;
-    }
-
-    .student-row:hover {
-      background-color: #f5f9ff;
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-    }
-
-    /* Default profile picture style */
-    .default-profile {
-      background-color: #e0e0e0;
-      color: #555;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 18px;
-    }
-  </style>
-</head>
-<body>
-  <button class="toggle-btn" id="toggleBtn">☰</button>
-
-  <div class="container">
-    <!-- Sidebar Navigation -->
-    <nav class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <i><img class="online-course" src="{% static 'image/education.png' %}" alt=""></i>
-        <h2>Tutionary</h2>
-      </div>
-
-      <ul class="nav-list">
-        <li class="nav-item">
-          <i><img class="online-course" src="{% static 'image/online-course.png' %}" alt=""></i>
-          <a href="{% url 'teacher_home' %}" class="nav-link">Home</a>
-        </li>
-        <li class="nav-item">
-          <i><img class="online-course" src="{% static 'image/online-course.png' %}" alt=""></i>
-          <a href="{% url 'teacher_class' %}" class="nav-link">Class</a>
-        </li>
-        <li class="nav-item">
-          <i><img class="online-course" src="{% static 'image/female.png' %}" alt=""></i>
-          <a href="{% url 'teacher_profile' %}" class="nav-link">Teacher</a>
-        </li>
-        <li class="nav-item">
-          <i><img class="online-course" src="{% static 'image/audience.png' %}" alt=""></i>
-          <a href="{% url 'teacher_student_list' %}" class="nav-link">Student List</a>
-        </li>
-        <li class="nav-item">
-          <i><img class="online-course" src="{% static 'image/audience.png' %}" alt=""></i>
-          <a href="{% url 'logout' %}" class="nav-link">Logout</a>
-        </li>
-      </ul>
-    </nav>
-
-    <div class="content-wrapper">
-      <div class="course-main-content">
-        <h1 class="course-heading">Students in Your Class</h1>
-
-        {% if messages %}
-        <div class="messages">
-          {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-          {% endfor %}
-        </div>
-        {% endif %}
-
-        <!-- Search Bar -->
-        <div class="search-container">
-          <input type="text" id="studentSearch" class="search-input" placeholder="Search students by name..." onkeyup="searchStudents()">
-        </div>
-
-        {% if students %}
-        <table class="styled-table" id="studentTable">
-          <thead>
-            <tr>
-              <th>Profile</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Phone</th>
-              <th>School</th>
-              <th>Gender</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for student in students %}
-            <tr class="student-row" data-student-name="{{ student.fname|lower }} {{ student.lname|lower }}">
-              <td>
-                <img src="{% if student.image %}{{ student.image.url }}{% else %}{% static 'image/default_student.png' %}{% endif %}" 
-                     alt="{{ student.fname }}'s profile" class="student-image">
-              </td>
-              <td>{{ student.fname }}</td>
-              <td>{{ student.lname }}</td>
-              <td>{{ student.phno }}</td>
-              <td>{{ student.current_school }}</td>
-              <td>{{ student.gender.name }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        
-        <!-- No results message (hidden by default) -->
-        <div class="no-results" id="noResults" style="display: none;">
-          <p>No students found matching your search.</p>
-        </div>
-        
-        {% else %}
-        <p>No students found in your class.</p>
-        {% endif %}
-      </div>
-    </div>
-    
-  </div>
-
-  <script>
-    // Toggle sidebar on mobile
-    const toggleBtn = document.getElementById('toggleBtn');
-    const sidebar = document.getElementById('sidebar');
-    
-    toggleBtn.addEventListener('click', function() {
-      sidebar.classList.toggle('active');
-    });
-    
-    // Search functionality
-    function searchStudents() {
-      const searchInput = document.getElementById('studentSearch');
-      const filter = searchInput.value.toLowerCase();
-      const studentRows = document.getElementsByClassName('student-row');
-      const noResultsDiv = document.getElementById('noResults');
-      
-      let foundMatch = false;
-      
-      for (let i = 0; i < studentRows.length; i++) {
-        const studentName = studentRows[i].getAttribute('data-student-name');
-        if (studentName.indexOf(filter) > -1) {
-          studentRows[i].style.display = "";
-          foundMatch = true;
-        } else {
-          studentRows[i].style.display = "none";
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student List | Tutionary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .sidebar-item-active {
+            background: linear-gradient(90deg, #4f46e5 0%, #818cf8 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
         }
-      }
-      
-      // Show or hide the "no results" message
-      if (foundMatch || filter === "") {
-        noResultsDiv.style.display = "none";
-      } else {
-        noResultsDiv.style.display = "block";
-      }
-    }
-  </script>
+        .custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <div class="flex h-screen overflow-hidden">
+        
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:static lg:inset-0">
+            <div class="flex flex-col h-full">
+                <div class="p-8">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-indigo-600 rounded-xl shadow-lg shadow-indigo-200">
+                            <img src="{% static 'image/education.png' %}" class="w-8 h-8 brightness-0 invert" alt="Logo">
+                        </div>
+                        <h2 class="text-xl font-bold tracking-tight text-slate-800">Tutionary</h2>
+                    </div>
+                </div>
+
+                <nav class="flex-1 px-6 space-y-2 overflow-y-auto custom-scroll">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 px-4">Menu</p>
+                    
+                    <a href="{% url 'teacher_home' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/online-course.png' %}" class="w-5 h-5 opacity-60" alt=""> Home
+                    </a>
+                    
+                    <a href="{% url 'teacher_class' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/online-course.png' %}" class="w-5 h-5 opacity-60" alt=""> Class
+                    </a>
+
+                    <a href="{% url 'teacher_profile' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
+                        <img src="{% static 'image/female.png' %}" class="w-5 h-5 opacity-60" alt=""> My Profile
+                    </a>
+
+                    <a href="{% url 'teacher_student_list' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl sidebar-item-active font-medium">
+                        <img src="{% static 'image/audience.png' %}" class="w-5 h-5 opacity-80" alt=""> Student List
+                    </a>
+                </nav>
+
+                <div class="p-6 border-t border-slate-100">
+                    <a href="{% url 'logout' %}" class="flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        <span class="font-medium">Logout</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <div class="flex-1 flex flex-col min-w-0 bg-slate-50 overflow-hidden">
+            
+            <header class="bg-white border-b border-slate-200 flex items-center justify-between px-6 py-4 lg:hidden">
+                <div class="flex items-center gap-2">
+                    <img src="{% static 'image/education.png' %}" class="w-6 h-6" alt="Logo">
+                    <span class="font-bold text-slate-800">Tutionary</span>
+                </div>
+                <button id="mobile-toggle" class="text-slate-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </header>
+
+            <main class="flex-1 overflow-y-auto p-4 lg:p-8">
+                <div class="max-w-7xl mx-auto">
+                    
+                    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+                        <div>
+                            <h1 class="text-2xl font-bold text-slate-900">My Students</h1>
+                            <p class="text-slate-500 mt-1">View details of students enrolled in your class.</p>
+                        </div>
+                        
+                        <div class="relative w-full md:w-72">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            </span>
+                            <input type="text" id="studentSearch" onkeyup="searchStudents()" 
+                                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all" 
+                                placeholder="Search by name...">
+                        </div>
+                    </div>
+
+                    {% if messages %}
+                        <div class="mb-6 space-y-2">
+                            {% for message in messages %}
+                            <div class="p-4 rounded-xl text-sm font-medium 
+                                {% if message.tags == 'success' %} bg-emerald-50 text-emerald-700 border border-emerald-200
+                                {% elif message.tags == 'error' %} bg-red-50 text-red-700 border border-red-200
+                                {% else %} bg-blue-50 text-blue-700 border border-blue-200 {% endif %}">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                        
+                        <div class="overflow-x-auto custom-scroll">
+                            <table class="w-full whitespace-nowrap text-left">
+                                <thead class="bg-slate-50 border-b border-slate-100">
+                                    <tr>
+                                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Student Profile</th>
+                                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Contact No</th>
+                                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Current School</th>
+                                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Gender</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    {% if students %}
+                                        {% for student in students %}
+                                        <tr class="student-row hover:bg-slate-50 transition-colors group" data-student-name="{{ student.fname|lower }} {{ student.lname|lower }}">
+                                            
+                                            <td class="px-6 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-10 h-10 rounded-full bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200">
+                                                        {% if student.image %}
+                                                            <img src="{{ student.image.url }}" class="w-full h-full object-cover" alt="Student">
+                                                        {% else %}
+                                                            <div class="w-full h-full flex items-center justify-center text-slate-400">
+                                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-sm font-semibold text-slate-900">{{ student.fname }} {{ student.lname }}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td class="px-6 py-4">
+                                                <p class="text-sm text-slate-600 font-mono">{{ student.phno }}</p>
+                                            </td>
+
+                                            <td class="px-6 py-4">
+                                                <p class="text-sm text-slate-600">{{ student.current_school }}</p>
+                                            </td>
+
+                                            <td class="px-6 py-4">
+                                                <span class="inline-flex px-2.5 py-0.5 rounded-md text-xs font-medium 
+                                                    {% if student.gender.name|lower == 'male' %} bg-blue-50 text-blue-700 border border-blue-100
+                                                    {% elif student.gender.name|lower == 'female' %} bg-pink-50 text-pink-700 border border-pink-100
+                                                    {% else %} bg-slate-100 text-slate-700 border border-slate-200 {% endif %}">
+                                                    {{ student.gender.name }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="4" class="px-6 py-12 text-center text-slate-500">
+                                                <div class="flex flex-col items-center">
+                                                    <div class="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mb-3">
+                                                        <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                                                    </div>
+                                                    <p>No students found in your class.</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div id="noResults" class="hidden px-6 py-12 text-center text-slate-500">
+                            <p>No students found matching your search.</p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const sidebar = document.getElementById('sidebar');
+
+        mobileToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth < 1024) {
+                if (!sidebar.contains(e.target) && !mobileToggle.contains(e.target)) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            }
+        });
+
+        // Search Function
+        function searchStudents() {
+            const searchInput = document.getElementById('studentSearch');
+            const filter = searchInput.value.toLowerCase();
+            const studentRows = document.getElementsByClassName('student-row');
+            const noResultsDiv = document.getElementById('noResults');
+            let foundMatch = false;
+            
+            for (let i = 0; i < studentRows.length; i++) {
+                const studentName = studentRows[i].getAttribute('data-student-name');
+                if (studentName.indexOf(filter) > -1) {
+                    studentRows[i].style.display = "";
+                    foundMatch = true;
+                } else {
+                    studentRows[i].style.display = "none";
+                }
+            }
+            
+            if (foundMatch) {
+                noResultsDiv.classList.add('hidden');
+            } else {
+                noResultsDiv.classList.remove('hidden');
+            }
+        }
+    </script>
 </body>
 </html>

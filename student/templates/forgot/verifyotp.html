@@ -1,97 +1,81 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify OTP</title>
+    <title>Verify OTP | Tutionary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            width: 350px;
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        p {
-            text-align: center;
-            color: #666;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #4285f4;
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #3367d6;
-        }
-        .message {
-            margin-bottom: 20px;
-            padding: 10px;
-            border-radius: 4px;
-            text-align: center;
-        }
-        .error {
-            background-color: #ffebee;
-            color: #c62828;
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .form-input:focus {
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h2>Email Verification</h2>
-        <p>We've sent a verification code to your email address. Please enter it below.</p>
-        {% if messages %}
-            {% for message in messages %}
-                <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
-                    {{ message }}
+<body class="bg-slate-50 text-slate-900 min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-md">
+        
+        <div class="bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-200 overflow-hidden">
+            
+            <div class="p-8">
+                
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-50 text-indigo-600 mb-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-900">Verify Your Email</h2>
+                    <p class="text-slate-500 mt-2 text-sm leading-relaxed">
+                        We've sent a verification code to your email address. Please enter the code below.
+                    </p>
                 </div>
-            {% endfor %}
-        {% endif %}
-        <form method="POST">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="otp">Verification Code (OTP)</label>
-                <input type="text" id="otp" name="otp" required>
+
+                {% if messages %}
+                    <div class="mb-6 space-y-2">
+                        {% for message in messages %}
+                        <div class="p-4 rounded-xl text-sm font-medium flex items-center gap-3
+                            {% if message.tags == 'error' %} bg-red-50 text-red-700 border border-red-100
+                            {% else %} bg-blue-50 text-blue-700 border border-blue-100 {% endif %}">
+                            
+                            {% if message.tags == 'error' %}
+                                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            {% else %}
+                                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            {% endif %}
+                            
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form method="POST" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    <div>
+                        <label for="otp" class="block text-sm font-semibold text-slate-700 mb-2 text-center">Enter 4-Digit Code</label>
+                        <input type="text" id="otp" name="otp" placeholder="XXXX" maxlength="6"
+                            class="form-input w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-indigo-500 focus:outline-none transition-colors text-center text-2xl tracking-[0.5em] font-bold text-slate-800" required>
+                    </div>
+
+                    <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-3.5 rounded-xl hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 transition-all shadow-lg shadow-indigo-200 transform active:scale-95">
+                        Verify Account
+                    </button>
+                </form>
+
+                <div class="mt-8 text-center">
+                    <p class="text-sm text-slate-500">
+                        Didn't receive the code? 
+                        <a href="#" class="font-bold text-indigo-600 hover:text-indigo-700 hover:underline transition-colors">Resend</a>
+                    </p>
+                </div>
+
             </div>
-            <button type="submit">Verify</button>
-        </form>
+        </div>
+        
     </div>
+
 </body>
 </html>
