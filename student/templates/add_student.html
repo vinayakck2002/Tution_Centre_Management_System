@@ -17,7 +17,7 @@
         .custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
         .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        
+
         /* File Input Styling */
         input[type="file"]::file-selector-button {
             margin-right: 1rem;
@@ -38,7 +38,7 @@
 <body class="bg-slate-50 text-slate-900">
 
     <div class="flex h-screen overflow-hidden">
-        
+
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:static lg:inset-0">
             <div class="flex flex-col h-full">
                 <div class="p-8">
@@ -52,11 +52,11 @@
 
                 <nav class="flex-1 px-6 space-y-2 overflow-y-auto custom-scroll">
                     <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 px-4">Menu</p>
-                    
+
                     <a href="{% url 'index' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
                         <img src="{% static 'image/online-course.png' %}" class="w-5 h-5 opacity-60" alt=""> Dashboard
                     </a>
-                    
+
                     <a href="{% url 'addcourse' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
                         <img src="{% static 'image/online-course.png' %}" class="w-5 h-5 opacity-60" alt=""> Classes
                     </a>
@@ -88,20 +88,22 @@
         </aside>
 
         <div class="flex-1 flex flex-col min-w-0 bg-slate-50 overflow-hidden">
-            
-            <header class="bg-white border-b border-slate-200 flex items-center justify-between px-6 py-4 lg:hidden">
+
+            <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-6 py-4 lg:hidden sticky top-0 z-20">
                 <div class="flex items-center gap-2">
-                    <img src="{% static 'image/education.png' %}" class="w-6 h-6" alt="Logo">
-                    <span class="font-bold text-slate-800">Tutionary</span>
+                    <div class="p-1.5 bg-indigo-600 rounded-lg">
+                        <img src="{% static 'image/education.png' %}" class="w-5 h-5 brightness-0 invert" alt="Logo">
+                    </div>
+                    <span class="font-bold text-slate-800 text-lg">Tutionary</span>
                 </div>
-                <button id="mobile-toggle" class="text-slate-600">
+                <button id="mobile-toggle" class="text-slate-600 hover:bg-slate-100 p-2 rounded-lg transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
             </header>
 
             <main class="flex-1 overflow-y-auto p-4 lg:p-8 flex justify-center">
                 <div class="w-full max-w-3xl">
-                    
+
                     <div class="mb-8 text-center md:text-left">
                         <h1 class="text-2xl font-bold text-slate-900">Student Admission</h1>
                         <p class="text-slate-500 mt-1">Fill in the details to enroll a new student.</p>
@@ -110,7 +112,7 @@
                     {% if messages %}
                         <div class="mb-6 space-y-2">
                             {% for message in messages %}
-                            <div class="p-4 rounded-xl text-sm font-medium 
+                            <div class="p-4 rounded-xl text-sm font-medium
                                 {% if message.tags == 'success' %} bg-emerald-50 text-emerald-700 border border-emerald-200
                                 {% elif message.tags == 'error' %} bg-red-50 text-red-700 border border-red-200
                                 {% else %} bg-blue-50 text-blue-700 border border-blue-200 {% endif %}">
@@ -124,16 +126,16 @@
                         <div class="p-6 md:p-8">
                             <form method="POST" action="{% url 'addstudent' %}" enctype="multipart/form-data" class="space-y-6">
                                 {% csrf_token %}
-                                
+
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="space-y-1.5">
                                         <label class="text-sm font-semibold text-slate-700">First Name</label>
-                                        <input type="text" name="first_name" placeholder="Enter The First Name" 
+                                        <input type="text" name="first_name" placeholder="Enter The First Name"
                                             class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all" required>
                                     </div>
                                     <div class="space-y-1.5">
                                         <label class="text-sm font-semibold text-slate-700">Last Name</label>
-                                        <input type="text" name="last_name" placeholder="Enter The Last Name" 
+                                        <input type="text" name="last_name" placeholder="Enter The Last Name"
                                             class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all" required>
                                     </div>
                                 </div>
@@ -141,12 +143,12 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="space-y-1.5">
                                         <label class="text-sm font-semibold text-slate-700">Phone Number</label>
-                                        <input type="tel" name="phone" placeholder="Enter The Number" 
+                                        <input type="tel" name="phone" placeholder="Enter The Number"
                                             class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all" required>
                                     </div>
                                     <div class="space-y-1.5">
                                         <label class="text-sm font-semibold text-slate-700">Current School</label>
-                                        <input type="text" name="school" placeholder="Previous School Name" 
+                                        <input type="text" name="school" placeholder="Previous School Name"
                                             class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all" required>
                                     </div>
                                 </div>

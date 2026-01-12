@@ -26,14 +26,14 @@
 
         <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
             <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md p-6">
-                
+
                 <div class="flex flex-col items-center text-center">
                     <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 mb-4">
                         <svg class="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                         </svg>
                     </div>
-                    
+
                     <h3 class="text-xl font-bold leading-6 text-gray-900" id="modal-title">Delete Student?</h3>
                     <div class="mt-2">
                         <p class="text-sm text-gray-500">
@@ -44,7 +44,7 @@
 
                 <div class="mt-6 flex gap-3">
                     <button type="button" class="w-full inline-flex justify-center rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" onclick="closeDeleteModal()">Cancel</button>
-                    
+
                     <form id="deleteForm" method="post" action="" class="w-full">
                         {% csrf_token %}
                         <button type="submit" class="w-full inline-flex justify-center rounded-xl bg-red-600 px-3 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500">Delete</button>
@@ -54,7 +54,7 @@
         </div>
     </div>
     <div class="flex h-screen overflow-hidden">
-        
+
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:static lg:inset-0">
             <div class="flex flex-col h-full">
                 <div class="p-8">
@@ -68,11 +68,11 @@
 
                 <nav class="flex-1 px-6 space-y-2 overflow-y-auto">
                     <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 px-4">Menu</p>
-                    
+
                     <a href="{% url 'index' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
                         <img src="{% static 'image/online-course.png' %}" class="w-5 h-5 opacity-60" alt=""> Dashboard
                     </a>
-                    
+
                     <a href="{% url 'addcourse' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all duration-200">
                         <img src="{% static 'image/online-course.png' %}" class="w-5 h-5 opacity-60" alt=""> Classes
                     </a>
@@ -104,32 +104,34 @@
         </aside>
 
         <div class="flex-1 flex flex-col min-w-0 bg-slate-50 overflow-hidden">
-            
-            <header class="bg-white border-b border-slate-200 flex items-center justify-between px-6 py-4 lg:hidden">
+
+            <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-6 py-4 lg:hidden sticky top-0 z-20">
                 <div class="flex items-center gap-2">
-                    <img src="{% static 'image/education.png' %}" class="w-6 h-6" alt="Logo">
-                    <span class="font-bold text-slate-800">Tutionary</span>
+                    <div class="p-1.5 bg-indigo-600 rounded-lg">
+                        <img src="{% static 'image/education.png' %}" class="w-5 h-5 brightness-0 invert" alt="Logo">
+                    </div>
+                    <span class="font-bold text-slate-800 text-lg">Tutionary</span>
                 </div>
-                <button id="mobile-toggle" class="text-slate-600">
+                <button id="mobile-toggle" class="text-slate-600 hover:bg-slate-100 p-2 rounded-lg transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
             </header>
 
             <main class="flex-1 overflow-y-auto p-4 lg:p-8">
                 <div class="max-w-7xl mx-auto">
-                    
+
                     <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
                         <div>
                             <h1 class="text-2xl font-bold text-slate-900">Student Directory</h1>
                             <p class="text-slate-500 mt-1">Manage and view all enrolled students.</p>
                         </div>
-                        
+
                         <div class="relative w-full md:w-72">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                             </span>
-                            <input type="text" id="studentSearch" onkeyup="searchStudents()" 
-                                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all" 
+                            <input type="text" id="studentSearch" onkeyup="searchStudents()"
+                                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
                                 placeholder="Search by name...">
                         </div>
                     </div>
@@ -137,7 +139,7 @@
                     {% if messages %}
                         <div class="mb-6 space-y-2">
                             {% for message in messages %}
-                            <div class="p-4 rounded-xl text-sm font-medium 
+                            <div class="p-4 rounded-xl text-sm font-medium
                                 {% if message.tags == 'success' %} bg-emerald-50 text-emerald-700 border border-emerald-200
                                 {% elif message.tags == 'error' %} bg-red-50 text-red-700 border border-red-200
                                 {% else %} bg-blue-50 text-blue-700 border border-blue-200 {% endif %}">
@@ -162,7 +164,7 @@
                                 <tbody class="divide-y divide-slate-100">
                                     {% for student in students %}
                                     <tr class="student-row hover:bg-slate-50 transition-colors group" data-student-name="{{ student.fname|lower }} {{ student.lname|lower }}">
-                                        
+
                                         <td class="px-6 py-4">
                                             <div class="flex items-center gap-3">
                                                 <div class="w-10 h-10 rounded-full bg-slate-100 overflow-hidden flex-shrink-0 border border-slate-200">
@@ -202,7 +204,7 @@
                                                 <a href="{% url 'edit_student' student.id %}" class="p-2 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Edit">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                                 </a>
-                                                
+
                                                 <button type="button" onclick="confirmDelete('{% url 'delete_student' student.id %}')" class="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                                 </button>
@@ -224,7 +226,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
                         <div id="noResults" class="hidden px-6 py-12 text-center text-slate-500 bg-white">
                             <p>No students found matching your search.</p>
                         </div>
@@ -261,7 +263,7 @@
             const studentRows = document.getElementsByClassName('student-row');
             const noResultsDiv = document.getElementById('noResults');
             let foundMatch = false;
-            
+
             for (let i = 0; i < studentRows.length; i++) {
                 const studentName = studentRows[i].getAttribute('data-student-name');
                 if (studentName.indexOf(filter) > -1) {
@@ -271,7 +273,7 @@
                     studentRows[i].style.display = "none";
                 }
             }
-            
+
             if (foundMatch) {
                 noResultsDiv.classList.add('hidden');
             } else {

@@ -22,7 +22,7 @@
 <body class="bg-slate-50 text-slate-900">
 
     <div class="flex h-screen overflow-hidden">
-        
+
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:static lg:inset-0">
             <div class="flex flex-col h-full">
                 <div class="p-8">
@@ -36,11 +36,11 @@
 
                 <nav class="flex-1 px-6 space-y-2 overflow-y-auto">
                     <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4 px-4">Menu</p>
-                    
+
                     <a href="{% url 'index' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all">
                         <img src="{% static 'image/online-course.png' %}" class="w-5 h-5 opacity-60" alt=""> Dashboard
                     </a>
-                    
+
                     <a href="{% url 'addcourse' %}" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-indigo-600 rounded-xl transition-all">
                         <img src="{% static 'image/online-course.png' %}" class="w-5 h-5 opacity-60" alt=""> Classes
                     </a>
@@ -72,20 +72,22 @@
         </aside>
 
         <div class="flex-1 flex flex-col min-w-0 bg-slate-50 overflow-hidden">
-            
-            <header class="bg-white border-b border-slate-200 flex items-center justify-between px-6 py-4 lg:hidden">
+
+            <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-6 py-4 lg:hidden sticky top-0 z-20">
                 <div class="flex items-center gap-2">
-                    <img src="{% static 'image/education.png' %}" class="w-6 h-6" alt="Logo">
-                    <span class="font-bold text-slate-800">Tutionary</span>
+                    <div class="p-1.5 bg-indigo-600 rounded-lg">
+                        <img src="{% static 'image/education.png' %}" class="w-5 h-5 brightness-0 invert" alt="Logo">
+                    </div>
+                    <span class="font-bold text-slate-800 text-lg">Tutionary</span>
                 </div>
-                <button id="mobile-toggle" class="text-slate-600">
+                <button id="mobile-toggle" class="text-slate-600 hover:bg-slate-100 p-2 rounded-lg transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
             </header>
 
             <main class="flex-1 overflow-y-auto p-4 lg:p-8">
                 <div class="max-w-7xl mx-auto">
-                    
+
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
                         <div>
                             <h1 class="text-2xl font-bold text-slate-900">Class Scheduling</h1>
@@ -96,7 +98,7 @@
                     {% if messages %}
                         <div class="mb-6 space-y-2">
                             {% for message in messages %}
-                            <div class="p-4 rounded-xl text-sm font-medium 
+                            <div class="p-4 rounded-xl text-sm font-medium
                                 {% if message.tags == 'success' %} bg-emerald-50 text-emerald-700 border border-emerald-200
                                 {% elif message.tags == 'error' %} bg-red-50 text-red-700 border border-red-200
                                 {% else %} bg-blue-50 text-blue-700 border border-blue-200 {% endif %}">
@@ -107,7 +109,7 @@
                     {% endif %}
 
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                        
+
                         <div class="lg:col-span-4">
                             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sticky top-6">
                                 <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
@@ -116,10 +118,10 @@
                                     </span>
                                     Set Class Timing
                                 </h3>
-                                
+
                                 <form method="post" action="{% url 'addtime' %}" class="space-y-5">
                                     {% csrf_token %}
-                                    
+
                                     <div>
                                         <label for="class_id" class="block text-sm font-medium text-slate-700 mb-1">Select Class</label>
                                         <select id="class_id" name="class_id" class="form-input w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-indigo-500 focus:outline-none transition-colors bg-white" required>
@@ -134,7 +136,7 @@
                                         <div>
                                             <label for="start" class="block text-sm font-medium text-slate-700 mb-1">Start Time</label>
                                             <div class="relative">
-                                                <input type="text" id="start" name="start" placeholder="09:00 AM" 
+                                                <input type="text" id="start" name="start" placeholder="09:00 AM"
                                                     class="form-input w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-indigo-500 focus:outline-none transition-colors" required>
                                             </div>
                                         </div>
@@ -142,7 +144,7 @@
                                         <div>
                                             <label for="end" class="block text-sm font-medium text-slate-700 mb-1">End Time</label>
                                             <div class="relative">
-                                                <input type="text" id="end" name="end" placeholder="10:30 AM" 
+                                                <input type="text" id="end" name="end" placeholder="10:30 AM"
                                                     class="form-input w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:border-indigo-500 focus:outline-none transition-colors" required>
                                             </div>
                                         </div>
@@ -157,30 +159,30 @@
 
                         <div class="lg:col-span-8">
                             <h3 class="text-lg font-bold text-slate-800 mb-4">Current Schedules</h3>
-                            
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {% for time in times %}
                                 <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition-all group hover:-translate-y-1">
-                                    
+
                                     <div class="flex justify-between items-center mb-4">
                                         <h4 class="text-lg font-bold text-slate-900">{{ time.classs.name }}</h4>
                                         <div class="p-2 bg-indigo-50 rounded-lg text-indigo-600">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 flex items-center justify-center gap-3 mb-4">
                                         <span class="font-semibold text-slate-700">{{ time.start }}</span>
                                         <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                                         <span class="font-semibold text-slate-700">{{ time.end }}</span>
                                     </div>
-                                    
+
                                     <div class="flex items-center justify-end gap-2 pt-2 mt-auto">
                                         <a href="{% url 'edit_time' time.id %}" class="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 00 2 2h11a2 2 0 00 2-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                             Edit
                                         </a>
-                                        
+
                                         <form method="post" action="{% url 'delete_time' time.id %}" onsubmit="return confirm('Delete this schedule?');">
                                             {% csrf_token %}
                                             <button type="submit" class="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">

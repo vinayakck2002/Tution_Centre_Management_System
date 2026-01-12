@@ -66,7 +66,7 @@ def signin(request):
                 return redirect('teacher_home')  # Not a teacher, just redirect
 
     if request.method == 'POST':
-        username = request.POST.get('username')
+        username = request.POST.get('username').strip()
         password = request.POST.get('password')
 
         if not username or not password:
